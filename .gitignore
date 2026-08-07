@@ -4,3 +4,4 @@ _archive/
 .DS_Store
 *.ppm
 tools/harness/*-wip.mjs
+.vercel

@@ -1,0 +1,8 @@
+node_modules
+_archive
+models
+img/src
+tools
+src/*.txt
+src/env-v2.md
+SPEC.md

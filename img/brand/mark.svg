@@ -1,0 +1,22 @@
+<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="au" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#F6E7A0"/>
+      <stop offset="0.42" stop-color="#D4AF37"/>
+      <stop offset="1" stop-color="#7A5E1C"/>
+    </linearGradient>
+    <linearGradient id="gloss" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FFFFFF" stop-opacity="0.85"/>
+      <stop offset="0.35" stop-color="#FFFFFF" stop-opacity="0.10"/>
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <!-- hawk wing: three swept feather blades rising to a head point -->
+  <path fill="url(#au)" d="M6 50 L20 18 L27 24 L15 52 Z"/>
+  <path fill="url(#au)" d="M20 50 L34 12 L41 18 L29 52 Z"/>
+  <path fill="url(#au)" d="M34 50 L48 8 L58 12 L52 22 L43 52 Z"/>
+  <!-- head/beak notch on the tallest blade -->
+  <path fill="url(#au)" d="M48 8 L58 12 L54 5 Z"/>
+  <!-- glossy sweep across the whole mark -->
+  <path fill="url(#gloss)" d="M6 50 L20 18 L27 24 L48 8 L58 12 L30 34 L15 52 Z" opacity="0.5"/>
+</svg>
