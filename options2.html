@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hero options v2 — pick a letter</title>
+<style>
+  :root{--ground:#08090B;--ink:#EDEAE5;--ink2:#A7A4A0;--ink3:#7C7A76;
+    --gold:#D4AF37;--gold-hi:#F3DE8A;--gold-dim:#9A7B2E;
+    --mono:ui-monospace,"SF Mono",Menlo,monospace;
+    --body:"Avenir Next",Avenir,-apple-system,system-ui,sans-serif}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--ground);color:var(--ink);font-family:var(--body);padding:40px}
+  h1{font-size:26px;font-weight:500;margin-bottom:6px}
+  .sub{color:var(--ink2);font-size:14px;margin-bottom:34px;max-width:78ch}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(480px,1fr));gap:26px}
+  @media (max-width:560px){ body{padding:18px} .grid{grid-template-columns:1fr} }
+  .opt{background:#0D0E11;border:1px solid rgba(212,175,55,.22);border-radius:4px;overflow:hidden}
+  .ph{aspect-ratio:16/9;overflow:hidden;background:#000}
+  .ph img{width:100%;height:100%;object-fit:cover}
+  .meta{padding:16px 18px;display:flex;gap:14px;align-items:baseline}
+  .letter{font-family:var(--mono);font-size:26px;
+    background:linear-gradient(175deg,var(--gold-hi) 8%,var(--gold) 46%,var(--gold-dim) 95%);
+    -webkit-background-clip:text;background-clip:text;color:transparent}
+  .meta b{font-weight:600;font-size:14.5px;display:block;margin-bottom:3px}
+  .meta p{font-size:12.5px;color:var(--ink2);line-height:1.5}
+  .meta .lic{font-family:var(--mono);font-size:9px;letter-spacing:.1em;color:var(--ink3);
+    text-transform:uppercase;margin-top:6px;display:block}
+  .flag{color:var(--gold)}
+</style>
+</head>
+<body>
+<h1>Hero photo v2 — full-resolution round</h1>
+<p class="sub">Every frame below was refetched or newly hunted at its original resolution
+(13&ndash;31&nbsp;megapixels), then graded into the site&rsquo;s near-black register with the real
+environment kept &mdash; no more crushed voids. Two frames are your actual fleet:
+<span class="flag">A&nbsp;and&nbsp;H are Range Rovers, C is the new Escalade&nbsp;V</span>.
+Reply with a letter.</p>
+<div class="grid">
+
+  <div class="opt"><div class="ph"><img src="img/options2/a-prev.jpg" alt="Range Rover dark street"></div>
+  <div class="meta"><span class="letter">A</span><div>
+    <b>Range Rover &mdash; dark street, one lit eye</b>
+    <p>Your fleet car. Near-black forest street, single headlight burning, fender and
+    22s in detail. A tight cinematic crop &mdash; the car exits the frame, on purpose.</p>
+    <span class="lic">Unsplash &middot; Samuel Hagger &middot; 3503px</span></div></div></div>
+
+  <div class="opt"><div class="ph"><img src="img/options2/b-prev.jpg" alt="Range Rover Sport gold bokeh"></div>
+  <div class="meta"><span class="letter">B</span><div>
+    <b>Range Rover Sport &mdash; under gold lights</b>
+    <p>Black paint mirroring a ceiling of warm gold string-light bokeh &mdash; literally the
+    brand palette in one photograph. Front three-quarter, glossy, sharp.</p>
+    <span class="lic">Unsplash &middot; Damian Kamp &middot; 4480px</span></div></div></div>
+
+  <div class="opt"><div class="ph"><img src="img/options2/c-prev.jpg" alt="Escalade V murdered out"></div>
+  <div class="meta"><span class="letter">C</span><div>
+    <b>Cadillac Escalade&nbsp;V &mdash; murdered out</b>
+    <p>Your other fleet car, the current-gen ESV, fully blacked. Sharpest file of the set;
+    daylight source graded down to night. Full car in frame.</p>
+    <span class="lic">Unsplash &middot; 4000px</span></div></div></div>
+
+  <div class="opt"><div class="ph"><img src="img/options2/d-prev.jpg" alt="G63 amber night"></div>
+  <div class="meta"><span class="letter">D</span><div>
+    <b>Mercedes-AMG G63 &mdash; amber night</b>
+    <p>Matte black slab side with cafe light burning in the glass. Not your fleet, but the
+    flagship-SUV night mood is undeniable.</p>
+    <span class="lic">Pexels &middot; 4160px</span></div></div></div>
+
+  <div class="opt"><div class="ph"><img src="img/options2/e-prev.jpg" alt="Cullinan full res"></div>
+  <div class="meta"><span class="letter">E</span><div>
+    <b>Rolls-Royce Cullinan &mdash; the current hero, full-res</b>
+    <p>Same blacked-out Cullinan, now from the 13MP original with the environment kept
+    &mdash; night lot, red grille glow. Plate killed.</p>
+    <span class="lic">Unsplash &middot; Franco Debartolo &middot; 2945px</span></div></div></div>
+
+  <div class="opt"><div class="ph"><img src="img/options2/f-prev.jpg" alt="Phantom head-on"></div>
+  <div class="meta"><span class="letter">F</span><div>
+    <b>Rolls-Royce Phantom &mdash; head-on jewel</b>
+    <p>The chrome grille and Spirit of Ecstasy dead-centre at night, from the 20MP
+    original. The most formal frame of the set.</p>
+    <span class="lic">Unsplash &middot; Franco Debartolo &middot; 3639px</span></div></div></div>
+
+  <div class="opt"><div class="ph"><img src="img/options2/g-prev.jpg" alt="Chauffeur at Phantom door"></div>
+  <div class="meta"><span class="letter">G</span><div>
+    <b>Chauffeur at the Phantom&rsquo;s open door &mdash; gold facade</b>
+    <p>The only real chauffeur frame in free stock, now from the 31MP original with the
+    brass hotel wall kept &mdash; service, captured. Back to camera.</p>
+    <span class="lic">Pexels &middot; 5472px</span></div></div></div>
+
+  <div class="opt"><div class="ph"><img src="img/options2/h-prev.jpg" alt="Range Rover Sport motion"></div>
+  <div class="meta"><span class="letter">H</span><div>
+    <b>Range Rover Sport &mdash; in motion</b>
+    <p>Current-gen RR Sport panning shot, city light streaks. The only moving frame
+    &mdash; energy instead of stillness.</p>
+    <span class="lic">Pexels &middot; 4000px</span></div></div></div>
+
+</div>
+</body>
+</html>
