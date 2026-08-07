@@ -72,8 +72,13 @@
   /* page three arrives on glass, over the living desert. glossy glass, not
      low-opacity grey: a sheen gradient + heavy blur + saturation, per the
      standing build rules — it must read as glass even over darkness. */
+  /* the company card DESCENDS from above onto the living desert — overflow
+     clips it while it is still up in the dark. transform is scroll-driven
+     from the rAF loop (CSS transitions do not tick in every pane). */
   #next{position:relative;z-index:2;min-height:100vh;display:flex;
-    align-items:center;justify-content:center;padding:8vh var(--safe) 8vh}
+    align-items:center;justify-content:center;padding:8vh var(--safe) 8vh;
+    overflow:hidden}
+  .glass{transform:translateY(-130vh)}
   .glass{width:min(680px, 92vw);border-radius:22px;padding:52px 56px;
     background:linear-gradient(165deg, rgba(246,231,160,.10), rgba(212,175,55,.045) 40%, rgba(255,255,255,.012));
     -webkit-backdrop-filter:blur(26px) saturate(1.5);
@@ -1017,15 +1022,21 @@ function fitPlane() {
   const PA = 16 / 9;                       // hero plate aspect
   const Hv = 2 * planeD * Math.tan(THREE.MathUtils.degToRad(18));
   const Wv = Hv * (innerWidth / innerHeight);
-  // FULL-BLEED WIDTH on every screen — the plate always spans edge to edge
-  // (capped only on extreme ultrawide), keeping its own 16:9 so nothing
-  // stretches and the whole car survives.
-  const W = Math.min(Wv, Hv * 1.10 * PA);
-  const H = W / PA;
-  planeW = W; planeH = H;
-  // the 20%-down, clamped so the plate's foot (and the wheels) never leaves
-  // the frame — portrait gets the full drop, 16:9 gets what fits (~6%).
-  planeShift = Math.max(0, Math.min(0.20, 0.56 - H / (2 * Hv))) * Hv;
+  const portrait = innerWidth < innerHeight;
+  if (portrait) {
+    // full width, own aspect, dropped 20% — the whole car in a floating band
+    planeW = Wv; planeH = Wv / PA;
+    planeShift = 0.20 * Hv;
+  } else {
+    // landscape: TRUE full-bleed — 6% width overscan pushes the feathered
+    // edges off-screen (no black sides), and the car is BOTTOM-ANCHORED:
+    // its wheels rest at ~93% of the viewport, road crops away below, the
+    // dark treeline above takes the copy. car sits at 0.18–0.80 of the plate.
+    const W = Math.min(Wv * 1.06, Hv * 1.45 * PA);
+    planeW = W; planeH = W / PA;
+    const Hp = planeH / Hv;
+    planeShift = Math.max(0, 0.43 - 0.30 * Hp) * Hv;
+  }
 }
 const _bR = new THREE.Vector3(), _bU = new THREE.Vector3(),
       _bF = new THREE.Vector3(), _bC = new THREE.Vector3();
@@ -1050,13 +1061,16 @@ addEventListener('resize', () => {
 });
 read(); fitPlane();
 
+const nextSec = document.getElementById('next');
+const glassEl = nextSec ? nextSec.querySelector('.glass') : null;
+
 // the fixed lockup yields while the glass panel occupies the frame — the
 // panel scrolls to the very top on phones and the two brandings collide.
 {
   const mark = document.getElementById('mark');
   new IntersectionObserver(es => {
     for (const e of es) mark.classList.toggle('away', e.isIntersecting);
-  }, { rootMargin: '-6% 0px -72% 0px' }).observe(document.getElementById('next'));
+  }, { rootMargin: '-6% 0px -72% 0px' }).observe(nextSec);
 }
 
 const lerpN = (a, b, t) => a + (b - a) * t;
@@ -1106,6 +1120,16 @@ function update(dt, ms) {
     Math.sin(el) * dist + 0.9, Math.cos(az) * Math.cos(el) * dist);
   camera.lookAt(cx, 0.8, 0);
   stickPlane();   // the photograph rides the camera — sticky, never rotating
+
+  // the next page arrives from ABOVE: as its section scrolls into view the
+  // glass card descends out of the dark and settles over the desert.
+  if (glassEl) {
+    const r = nextSec.getBoundingClientRect();
+    const p = Math.min(1, Math.max(0, (innerHeight - r.top) / innerHeight));
+    const ep = p * p * (3 - 2 * p);
+    glassEl.style.transform = `translateY(${((1 - ep) * -1.3 * innerHeight).toFixed(1)}px)`;
+    glassEl.style.opacity = Math.min(1, p * 2.2).toFixed(3);
+  }
 
   if (uni) {
     uni.uJourney.value = jou;
