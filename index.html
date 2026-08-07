@@ -479,7 +479,7 @@ void main(){
 /* ---------- build ---------- */
 try {
   // the photograph — the realistic world all of this comes from
-  const tex = new THREE.TextureLoader().load('img/hero.png?v=3', () => { __status.push('photo-loaded'); wake(); });
+  const tex = new THREE.TextureLoader().load('img/hero.png?v=5', () => { __status.push('photo-loaded'); wake(); });
   tex.colorSpace = THREE.NoColorSpace;   // raw passthrough: the PNG as it looks on disk
   tex.minFilter = THREE.LinearFilter;
   tex.generateMipmaps = false;
