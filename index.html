@@ -26,7 +26,11 @@
     background:radial-gradient(130% 96% at 50% 46%, transparent 42%, #000 100%);opacity:.55}
 
   #mark{position:fixed;top:var(--safe);left:var(--safe);z-index:4;display:flex;
-    align-items:center;gap:13px;text-decoration:none}
+    align-items:center;gap:13px;text-decoration:none;
+    transition:opacity .45s ease;}
+  /* the lockup bows out while the company panel is up — the panel's note line
+     carries the formal name; two brandings in the same corner is a collision */
+  #mark.away{opacity:0;pointer-events:none}
   #mark svg{width:34px;height:34px;filter:drop-shadow(0 1px 6px rgba(212,175,55,.35))}
   #mark .bh{font-size:17px;line-height:19px;font-weight:600;letter-spacing:.30em;
     text-transform:uppercase;
@@ -1020,6 +1024,15 @@ addEventListener('resize', () => {
   fitPlane(); wake();
 });
 read(); fitPlane();
+
+// the fixed lockup yields while the glass panel occupies the frame — the
+// panel scrolls to the very top on phones and the two brandings collide.
+{
+  const mark = document.getElementById('mark');
+  new IntersectionObserver(es => {
+    for (const e of es) mark.classList.toggle('away', e.isIntersecting);
+  }, { rootMargin: '-6% 0px -72% 0px' }).observe(document.getElementById('next'));
+}
 
 const lerpN = (a, b, t) => a + (b - a) * t;
 
