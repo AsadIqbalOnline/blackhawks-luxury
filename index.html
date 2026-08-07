@@ -57,8 +57,11 @@
   @media (max-width:760px){
     .d1{font-size:26px;line-height:32px}
     .b1{font-size:16px;line-height:26px;margin-top:16px}
-    /* the hero plate is a centered 16:9 band on portrait — copy sits under it */
-    .copy{top:67vh}
+    /* full-frame hero photo behind — copy sits high, over the dark treeline */
+    .copy{top:60vh}
+    /* tighter track: no dead scroll between the desert and the card */
+    .beat{height:110vh}
+    .beat:nth-child(3){height:118vh}
     /* the card must land in ONE phone frame, desert visible around it */
     .glass{padding:30px 24px;border-radius:18px}
     .glass .d1{font-size:24px;line-height:30px;margin:8px 0 4px}
@@ -78,7 +81,8 @@
   #next{position:relative;z-index:2;min-height:100vh;display:flex;
     align-items:center;justify-content:center;padding:8vh var(--safe) 8vh;
     overflow:hidden}
-  .glass{transform:translateY(-130vh)}
+  /* the descend is a desktop gesture — on phones the card simply IS there */
+  @media (min-width:761px){ .glass{transform:translateY(-130vh)} }
   .glass{width:min(680px, 92vw);border-radius:22px;padding:52px 56px;
     background:linear-gradient(165deg, rgba(246,231,160,.10), rgba(212,175,55,.045) 40%, rgba(255,255,255,.012));
     -webkit-backdrop-filter:blur(26px) saturate(1.5);
@@ -190,8 +194,12 @@ let points = null, uni = null, plane = null, desert = null, dUni = null;
 window.__status = ['script-ran'];
 
 const touch = matchMedia('(hover:none)').matches;
-const GRID_W = touch ? 420 : 720;
-const GRID_H = touch ? 210 : 360;
+// phones get their own PORTRAIT plate — the first screen is FULL-FRAME photo,
+// so the plate must be composed for a tall frame, not cropped from the wide one
+const PLATE_PORTRAIT = matchMedia('(orientation: portrait)').matches;
+const PA = PLATE_PORTRAIT ? 9 / 16 : 16 / 9;   // aspect of the LOADED plate
+const GRID_W = touch ? (PLATE_PORTRAIT ? 240 : 420) : (PLATE_PORTRAIT ? 300 : 720);
+const GRID_H = touch ? (PLATE_PORTRAIT ? 432 : 210) : (PLATE_PORTRAIT ? 540 : 360);
 const COUNT = GRID_W * GRID_H;            // every particle is a pixel of the photo
 const DESERT_N = touch ? 170000 : 620000;
 
@@ -484,7 +492,9 @@ void main(){
 /* ---------- build ---------- */
 try {
   // the photograph — the realistic world all of this comes from
-  const tex = new THREE.TextureLoader().load('img/hero.png?v=6', () => { __status.push('photo-loaded'); wake(); });
+  const tex = new THREE.TextureLoader().load(
+    PLATE_PORTRAIT ? 'img/hero-portrait.png?v=1' : 'img/hero.png?v=6',
+    () => { __status.push('photo-loaded'); wake(); });
   tex.colorSpace = THREE.NoColorSpace;   // raw passthrough: the PNG as it looks on disk
   tex.minFilter = THREE.LinearFilter;
   tex.generateMipmaps = false;
@@ -1019,14 +1029,16 @@ function fitPlane() {
   const camPos = new THREE.Vector3(Math.sin(B.az) * Math.cos(B.el) * B.dist,
     Math.sin(B.el) * B.dist + 0.9, Math.cos(B.az) * Math.cos(B.el) * B.dist);
   planeD = camPos.distanceTo(new THREE.Vector3(0, 1.06, 3.4));
-  const PA = 16 / 9;                       // hero plate aspect
   const Hv = 2 * planeD * Math.tan(THREE.MathUtils.degToRad(18));
   const Wv = Hv * (innerWidth / innerHeight);
   const portrait = innerWidth < innerHeight;
   if (portrait) {
-    // full width, own aspect, dropped 20% — the whole car in a floating band
-    planeW = Wv; planeH = Wv / PA;
-    planeShift = 0.20 * Hv;
+    // FULL-FRAME on phones: the portrait plate COVERS the whole first screen
+    // (own 9:16 aspect, slight overscan so the feather lives off-screen)
+    planeH = Math.max(Hv * 1.03, Wv * 1.03 / PA);
+    planeW = planeH * PA;
+    if (planeW < Wv * 1.01) { planeW = Wv * 1.03; planeH = planeW / PA; }
+    planeShift = 0;
   } else {
     // landscape: TRUE full-bleed — 6% width overscan pushes the feathered
     // edges off-screen (no black sides), and the car is BOTTOM-ANCHORED:
@@ -1124,14 +1136,17 @@ function update(dt, ms) {
   camera.lookAt(cx, 0.8, 0);
   stickPlane();   // the photograph rides the camera — sticky, never rotating
 
-  // the next page arrives from ABOVE: as its section scrolls into view the
-  // glass card descends out of the dark and settles over the desert.
-  if (glassEl) {
+  // the next page arrives from ABOVE (desktop only): as its section scrolls
+  // into view the glass card descends out of the dark and settles over the
+  // desert. phones get the card static — no animation.
+  if (glassEl && innerWidth > 760) {
     const r = nextSec.getBoundingClientRect();
     const p = Math.min(1, Math.max(0, (innerHeight - r.top) / innerHeight));
     const ep = p * p * (3 - 2 * p);
     glassEl.style.transform = `translateY(${((1 - ep) * -1.3 * innerHeight).toFixed(1)}px)`;
     glassEl.style.opacity = Math.min(1, p * 2.2).toFixed(3);
+  } else if (glassEl && glassEl.style.transform) {
+    glassEl.style.transform = ''; glassEl.style.opacity = '';
   }
 
   if (uni) {
