@@ -6,6 +6,7 @@
 <title>Hero options — pick a letter</title>
 <style>
   :root{--ground:#08090B;--ink:#EDEAE5;--ink2:#A7A4A0;--ink3:#7C7A76;
+    --gold:#D4AF37;--gold-hi:#F3DE8A;--gold-dim:#9A7B2E;
     --mono:ui-monospace,"SF Mono",Menlo,monospace;
     --body:"Avenir Next",Avenir,-apple-system,system-ui,sans-serif}
   *{box-sizing:border-box;margin:0;padding:0}
@@ -13,16 +14,18 @@
   h1{font-size:26px;font-weight:500;margin-bottom:6px}
   .sub{color:var(--ink2);font-size:14px;margin-bottom:34px;max-width:70ch}
   .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(430px,1fr));gap:26px}
-  .opt{background:#0D0E11;border:1px solid #1C1D22;border-radius:4px;overflow:hidden}
+  .opt{background:#0D0E11;border:1px solid rgba(212,175,55,.22);border-radius:4px;overflow:hidden}
   .ph{aspect-ratio:16/9;overflow:hidden;background:#000;display:flex;align-items:center;justify-content:center}
   .ph img{width:100%;height:100%;object-fit:cover;filter:brightness(.92) saturate(.9)}
   .meta{padding:16px 18px;display:flex;gap:14px;align-items:baseline}
-  .letter{font-family:var(--mono);font-size:26px;color:#F2A65A}
+  .letter{font-family:var(--mono);font-size:26px;
+    background:linear-gradient(175deg,var(--gold-hi) 8%,var(--gold) 46%,var(--gold-dim) 95%);
+    -webkit-background-clip:text;background-clip:text;color:transparent}
   .meta b{font-weight:600;font-size:14.5px;display:block;margin-bottom:3px}
   .meta p{font-size:12.5px;color:var(--ink2);line-height:1.5}
   .meta .lic{font-family:var(--mono);font-size:9px;letter-spacing:.1em;color:var(--ink3);
     text-transform:uppercase;margin-top:6px;display:block}
-  .flag{color:#B08A4E}
+  .flag{color:var(--gold)}
 </style>
 </head>
 <body>

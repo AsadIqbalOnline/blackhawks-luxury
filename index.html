@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="icon" type="image/svg+xml" href="img/brand/mark.svg">
-<meta name="description" content="Black Hawks Luxury Concierge Services — chauffeured luxury transport for tour operators in Dubai. Range Rover and Cadillac Escalade, chauffeur included.">
+<meta name="description" content="Black Hawks Luxury Concierge Services — chauffeured Range Rover and Cadillac Escalade for tour operators and private clients in Dubai. From the airport barrier to the last door of the night, chauffeur included.">
 <title>Black Hawks — Luxury Concierge Services, Dubai</title>
 <style>
   :root{
@@ -43,8 +43,9 @@
   .beat:nth-child(3){height:150vh}
   .copy{position:sticky;top:14vh;margin-left:var(--safe);
     width:var(--measure-h);max-width:calc(100vw - var(--safe)*2)}
-  /* hero copy lives in the photograph's dead black — upper left, above the roofline */
-  .beat:first-child .copy{top:10vh}
+  /* hero copy lives in the photograph's dead black — upper left, above the
+     roofline. never under the fixed lockup, whatever the viewport height. */
+  .beat:first-child .copy{top:clamp(84px, 11vh, 22vh)}
   .eyebrow{font-family:var(--mono);font-size:11px;line-height:16px;letter-spacing:.16em;
     text-transform:uppercase;color:var(--gold);margin-bottom:24px}
   .d1{font-size:40px;line-height:48px;font-weight:500;letter-spacing:.002em;color:var(--ink)}
@@ -52,7 +53,10 @@
   @media (max-width:760px){
     .d1{font-size:26px;line-height:32px}
     .b1{font-size:16px;line-height:26px;margin-top:16px}
-    .copy{top:58vh}
+    /* the hero plate is a centered 16:9 band on portrait — copy sits under it */
+    .copy{top:67vh}
+    .glass{padding:36px 26px;border-radius:18px}
+    .actions a{font-size:12.5px;letter-spacing:.06em}
   }
 
   /* page three arrives on glass, over the living desert. glossy glass, not
@@ -131,13 +135,17 @@
      scene stays visible and moving behind the panel. -->
 <section id="next">
   <div class="glass">
-    <p class="eyebrow">Next</p>
+    <p class="eyebrow">Enquiries &middot; Dubai</p>
     <h2 class="d1">Send us a day.</h2>
-    <p class="b1">A date, a flight number, a headcount. Range Rover and Cadillac Escalade, chauffeur included.</p>
+    <p class="b1">A date, a flight number, a headcount &mdash; we come back with the car, the
+    chauffeur and one number that answers until the last door closes. Range Rover and
+    Cadillac Escalade, chauffeur included, on the ground in Dubai.</p>
+    <p class="b1">Built for tour operators and travel designers who put their own name on the
+    guest&rsquo;s day. Private itineraries taken when the calendar allows.</p>
     <nav class="actions">
-      <a href="mailto:enquiries@blackhawks.luxury">Email us a day</a>
+      <a href="mailto:enquiries@blackhawks.luxury">enquiries@blackhawks.luxury</a>
     </nav>
-    <p class="note">Content of this page is the next decision &mdash; the glass is the mechanism.</p>
+    <p class="note">Black Hawks Luxury Concierge Services &middot; Dubai, United Arab Emirates</p>
   </div>
 </section>
 
@@ -460,7 +468,7 @@ void main(){
 /* ---------- build ---------- */
 try {
   // the photograph — the realistic world all of this comes from
-  const tex = new THREE.TextureLoader().load('img/hero.png', () => { __status.push('photo-loaded'); wake(); });
+  const tex = new THREE.TextureLoader().load('img/hero.png?v=3', () => { __status.push('photo-loaded'); wake(); });
   tex.colorSpace = THREE.NoColorSpace;   // raw passthrough: the PNG as it looks on disk
   tex.minFilter = THREE.LinearFilter;
   tex.generateMipmaps = false;
@@ -692,7 +700,9 @@ try {
           if (a < 0.004) discard;
           gl_FragColor = vec4(c, a);
         }`,
-      transparent: true, depthWrite: false,
+      // additive: the plate's true-black floor adds NOTHING, so the sheet has
+      // no edges against the ground — the photograph floats, it isn't a card.
+      transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
     }));
   scene.add(plane);
 
@@ -982,14 +992,22 @@ addEventListener('pointermove', (e) => {
 }, { passive: true });
 
 function fitPlane() {
-  // the photograph fills the hero frame exactly, whatever the viewport
+  // the photograph keeps its OWN aspect — contain, never stretch. the plate is
+  // a studio float on true black, so the letterbox is invisible; on portrait
+  // phones this is what keeps the whole car (and chauffeur) in frame.
   const B = BEATS[0];
   const camPos = new THREE.Vector3(Math.sin(B.az) * Math.cos(B.el) * B.dist,
     Math.sin(B.el) * B.dist + 0.9, Math.cos(B.az) * Math.cos(B.el) * B.dist);
   const C = uni ? uni.uPlaneC.value : new THREE.Vector3(0, 1.06, 3.4);
   const D = camPos.distanceTo(C);
-  const H = 2 * D * Math.tan(THREE.MathUtils.degToRad(18)) * 1.10;
-  const W = H * (innerWidth / innerHeight) * 1.02;
+  const PA = 16 / 9;                       // hero plate aspect
+  const Hv = 2 * D * Math.tan(THREE.MathUtils.degToRad(18));
+  const Wv = Hv * (innerWidth / innerHeight);
+  // portrait: pure contain — the plate composes the car to its full width, so
+  // ANY overscan beheads a bumper. the letterbox is black-on-black, invisible.
+  const over = innerWidth < innerHeight ? 1.0 : 1.10;
+  const W = Math.min(Wv * over, Hv * 1.10 * PA);
+  const H = W / PA;
   if (uni) { uni.uPlaneR.value.set(W, 0, 0); uni.uPlaneU.value.set(0, H, 0); }
   if (plane) { plane.position.copy(C); plane.scale.set(W, H, 1); }
 }
@@ -1037,12 +1055,17 @@ function update(dt, ms) {
   eDragAz += (dragAz - eDragAz) * k(dt, 0.16);
   eDragEl += (dragEl - eDragEl) * k(dt, 0.16);
   const az = lerpN(A.az, B.az, e) + eDragAz, el = Math.max(0.02, lerpN(A.el, B.el, e) + eDragEl);
-  const dist = lerpN(A.dist, B.dist, e), cx = lerpN(A.x, B.x, e);
+  const jou = lerpN(A.jou, B.jou, e), exv = lerpN(A.exit, B.exit, e);
+  // narrow screens: back off until the whole car fits the horizontal field.
+  // comp=1 on desktop; ~2 on a portrait phone. blended in with the journey so
+  // the photograph beat (which has its own contain-fit) never moves.
+  const tanH = Math.tan(THREE.MathUtils.degToRad(18)) * camera.aspect;
+  const comp = Math.min(2.6, Math.max(1, (3.15 / tanH) / 10.6));
+  const dist = lerpN(A.dist, B.dist, e) * (1 + (comp - 1) * jou), cx = lerpN(A.x, B.x, e);
   camera.position.set(cx + Math.sin(az) * Math.cos(el) * dist,
     Math.sin(el) * dist + 0.9, Math.cos(az) * Math.cos(el) * dist);
   camera.lookAt(cx, 0.8, 0);
 
-  const jou = lerpN(A.jou, B.jou, e), exv = lerpN(A.exit, B.exit, e);
   if (uni) {
     uni.uJourney.value = jou;
     uni.uTime.value = ms * 0.001;
