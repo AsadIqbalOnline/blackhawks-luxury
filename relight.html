@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>[NAME] — Chauffeured cars for tour operators, Dubai</title>
+<meta name="description" content="Chauffeured Range Rover and Cadillac Escalade for tour operators in Dubai. Send us a day.">
+<style>
+  :root{
+    /* five values. there is no accent colour. nothing here is coloured — things are lit. */
+    --void:   #000000;   /* RESERVED as material: vignette floor, contact shadow. never a background. */
+    --ground: #08090B;   /* the page. NOT #000 — if the page floors at zero, black is spent on the
+                            ground and the plates' shadows have nowhere darker to go. */
+    --ink-3:  #7C7A76;   /* CR 4.65 — 12px+ only */
+    --ink-2:  #A7A4A0;   /* CR 8.03 — default for small type */
+    --ink:    #EDEAE5;   /* CR 16.60 — paper. hover target. */
+    --rule:   color-mix(in oklab, var(--ink) 12%, var(--ground));
+
+    /* Avenir, not Didot. didone-on-black is the perfume counter; Rolls-Royce sets a sans.
+       Avenir's 'c' aperture is 62.6% of x-height vs Helvetica's 30.0% — reversed-out type
+       on near-black blooms into its counters, and Helvetica has no move there. */
+    --body: "Avenir Next", Avenir, -apple-system, system-ui, sans-serif;
+    --mono: ui-monospace, "SF Mono", Menlo, monospace;
+
+    --safe: 40px;
+    --measure-h: 560px;
+    --measure-b: 380px;
+  }
+  @media (max-width:760px){ :root{ --safe:28px } }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{background:var(--ground)}
+  body{background:var(--ground);color:var(--ink);font-family:var(--body);
+    -webkit-font-smoothing:antialiased;overflow-x:hidden}
+
+  /* the plate layer. one canvas, fixed. the DOM sits above it, unlit —
+     type is not a surface. */
+  #stage{position:fixed;inset:0;z-index:0;background:var(--ground)}
+  #gl{width:100%;height:100%;display:block}
+  /* static fallback: if WebGL never comes up, the plates still show. the page must
+     never be a black rectangle. */
+  #fallback{position:fixed;inset:0;z-index:0;display:none;background-size:cover;
+    background-position:center}
+  html.nogl #fallback{display:block}
+  html.nogl #gl{display:none}
+
+  #vig{position:fixed;inset:0;z-index:1;pointer-events:none;
+    background:radial-gradient(128% 96% at 50% 46%, transparent 36%, var(--void) 100%);
+    opacity:.72}
+
+  /* ---- chrome. two objects. each earns its place. ---- */
+  #mark{position:fixed;top:var(--safe);left:var(--safe);z-index:4;
+    font-size:20px;line-height:20px;font-weight:500;letter-spacing:.22em;
+    text-transform:uppercase;color:var(--ink);text-decoration:none}
+  #mark span{color:var(--ink-3)}   /* the hole where the name goes */
+
+  #need{position:fixed;top:var(--safe);right:var(--safe);z-index:4;
+    font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;
+    color:#5E4E33;text-align:right;line-height:1.8}
+
+  /* ---- the scroll track ---- */
+  #track{position:relative;z-index:2}
+  .beat{height:120vh;position:relative}
+  /* STICKY, not absolute. The plate is fixed and only the copy scrolls — so an
+     absolutely-positioned block travels up the screen and its background changes
+     under it every frame. No fixed anchor can be "in the dark" if it is moving.
+     Pinning it holds it in the measured dead paint for the whole beat. */
+  .copy{position:sticky;width:var(--measure-h);max-width:calc(100vw - var(--safe)*2)}
+  /* copy sits in the plates' MEASURED dead paint — the words live where the light
+     isn't. Probed on the RENDERED canvas (the shader cover-crops, so plate coords
+     are not screen coords): all three frames read p99=0 across the top band. One
+     anchor because the photographs agree, not because it's a template. Flush-left:
+     centred type has no anchor by definition.
+     NO SCRIMS. EVER. A scrim is an admission that the crop is wrong. */
+  .copy{margin-left:var(--safe); top:13vh}
+
+  .eyebrow{font-family:var(--mono);font-size:11px;line-height:16px;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--ink-2);margin-bottom:24px}
+  .d1{font-size:40px;line-height:48px;font-weight:500;letter-spacing:.002em;
+    color:var(--ink);max-width:var(--measure-h)}
+  .b1{font-size:17px;line-height:27px;font-weight:400;letter-spacing:.004em;
+    color:var(--ink-2);max-width:var(--measure-b);margin-top:20px}
+  @media (max-width:760px){
+    .d1{font-size:26px;line-height:32px}
+    .b1{font-size:16px;line-height:26px;margin-top:16px}
+    /* portrait cover-crops the plate completely differently, so the dead paint
+       MOVES: on a phone the top band is the lit glass and the dark is the lower
+       body. Measured per breakpoint, not assumed. The copy follows the dark. */
+    .copy{width:auto;margin-right:var(--safe);top:62vh}
+  }
+
+  /* ---- the ask. no photograph. ---- */
+  #ask{position:relative;z-index:2;min-height:100vh;background:var(--ground);
+    display:flex;flex-direction:column;justify-content:center;
+    padding:12vh var(--safe) 0}
+  #ask .in{max-width:var(--measure-h)}
+  #ask .fleet{font-size:17px;line-height:27px;color:var(--ink-2);margin-bottom:28px}
+  #ask .d1{margin-bottom:12px}
+  .actions{display:flex;gap:28px;margin-top:32px;flex-wrap:wrap}
+  .actions a{font-size:14px;line-height:14px;font-weight:500;letter-spacing:.10em;
+    text-transform:uppercase;color:var(--ink-2);text-decoration:none;
+    border-bottom:1px solid var(--rule);padding-bottom:8px;transition:color .22s,border-color .22s}
+  .actions a:hover,.actions a:focus-visible{color:var(--ink);border-color:var(--ink)}
+  /* never a green branded chip — it would undo the whole page in one glance */
+  .note{font-family:var(--mono);font-size:11px;line-height:18px;letter-spacing:.02em;
+    color:var(--ink-3);margin-top:40px;max-width:var(--measure-b)}
+
+  footer{position:relative;z-index:2;background:var(--ground);
+    padding:12vh var(--safe) var(--safe);
+    display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
+    border-top:1px solid var(--rule);margin-top:12vh}
+  footer p{font-family:var(--mono);font-size:11px;line-height:18px;color:var(--ink-3)}
+  footer a{color:var(--ink-3);text-decoration:none;transition:color .22s}
+  footer a:hover{color:var(--ink)}
+
+  :focus-visible{outline:1px solid var(--ink);outline-offset:4px}
+  @media (prefers-reduced-motion:reduce){ *{transition:none!important} }
+</style>
+</head>
+<body>
+
+<div id="stage"><canvas id="gl"></canvas></div>
+<div id="fallback"></div>
+<div id="vig"></div>
+
+<a id="mark" href="#top">[<span>name</span>]</a>
+<div id="need">Design proof<br>placeholder cars</div>
+
+<main id="track" id="top">
+
+  <section class="beat" data-anchor="s1">
+    <div class="copy">
+      <p class="eyebrow">Chauffeured cars for tour operators &middot; Dubai</p>
+      <h1 class="d1">Your client does not open the door.</h1>
+      <p class="b1">Met by name at the barrier. The bags are moving before the greeting is finished.</p>
+    </div>
+  </section>
+
+  <section class="beat" data-anchor="s2">
+    <div class="copy">
+      <h2 class="d1">He does not leave.</h2>
+      <p class="b1">At the kerb since 05:50. The flight lands at 06:35. Not circling, not parked twenty minutes away, not on another job.</p>
+    </div>
+  </section>
+
+  <section class="beat" data-anchor="s3">
+    <div class="copy">
+      <h2 class="d1">He carries no cards.</h2>
+      <p class="b1">No number, no commission, no detour. Your client bought their day from you.</p>
+    </div>
+  </section>
+
+</main>
+
+<section id="ask">
+  <div class="in">
+    <p class="eyebrow">Ground transport for tour operators &middot; Dubai</p>
+    <p class="fleet">Range Rover and Cadillac Escalade. Chauffeur included.</p>
+    <h2 class="d1">Send us a day.</h2>
+    <p class="b1">A date, a flight number, a headcount.</p>
+    <nav class="actions">
+      <a id="wa" href="#" rel="noopener">WhatsApp us a day</a>
+      <a id="em" href="#">Email</a>
+    </nav>
+    <p class="note">No rate card on this page. Rates run on hours, not kilometres, so we would rather quote your actual day.</p>
+  </div>
+  <footer>
+    <p>[NAME] &middot; Dubai &middot; <a href="#" id="wa2">WhatsApp</a> &middot; <a href="#" id="em2">Email</a></p>
+    <p>Passenger transport licence [NUMBER REQUIRED]</p>
+  </footer>
+</section>
+
+<script type="module">
+import { PhotoRelight } from './src/photoRelight.js';
+
+const PLATES = [
+  // {src, warm, parallax} — the asset seam. swap the files, it's a different site.
+  // warm: 0.34 = a person is present. 0.10 = nobody is. the only motivated colour
+  // decision on the page, and it communicates without being explained.
+  { src:'img/s1-door.png',   warm:0.34, parallax:0.055 },
+  // parallax 0 is THE REFUSAL: you push and the car does not move. your own input
+  // proves "He does not leave." the only demonstration on the site.
+  { src:'img/s2-wait.png',   warm:0.10, parallax:0.000 },
+  { src:'img/s3-return.png', warm:0.30, parallax:0.055 },
+];
+// one light, front to back, once, never reversing. the assignment only moves one way.
+const SWEEP_DIRS = [[0.94,-0.34],[0.97,-0.24]];
+const SWEEPS = [[0.27,0.35],[0.62,0.70]];
+
+const canvas = document.getElementById('gl');
+let fx = null;
+try {
+  fx = new PhotoRelight(canvas, PLATES, { sweepDirs: SWEEP_DIRS });
+  window.__fx = fx;   // dev handle: lets the deadpaint probe drive beats without scrolling
+} catch (e) {
+  document.documentElement.classList.add('nogl');
+  document.getElementById('fallback').style.backgroundImage = `url(${PLATES[0].src})`;
+  console.warn('relight unavailable, static plate shown:', e.message);
+}
+
+// native scroll. no hijacking. smoothness comes from the eased shader, not from
+// stealing the scrollbar — the light being honest only means something if the
+// user's input is exact.
+function mapScroll(){
+  const track = document.getElementById('track');
+  const span = track.offsetHeight - innerHeight;
+  const s = Math.max(0, Math.min(1, scrollY / Math.max(1, span)));
+  let p = 0;
+  for (const [a,b] of SWEEPS){
+    const x = Math.min(1, Math.max(0, (s-a)/(b-a)));
+    p += (1 - Math.pow(1-x, 3.2)) / SWEEPS.length;   // fast out, long settle. never ease-in.
+  }
+  return p;
+}
+const onScroll = () => fx && fx.setProgress(mapScroll());
+addEventListener('scroll', onScroll, {passive:true});
+addEventListener('resize', onScroll);
+onScroll();
+
+// contact details are the client's to supply; wire them here when they land.
+const WA = null, EMAIL = null;
+if (WA) {
+  const msg = encodeURIComponent('Day for [date], flight [no.], [pax] passengers.');
+  for (const id of ['wa','wa2']) document.getElementById(id).href = `https://wa.me/${WA}?text=${msg}`;
+}
+if (EMAIL) for (const id of ['em','em2']) document.getElementById(id).href = `mailto:${EMAIL}`;
+</script>
+</body>
+</html>

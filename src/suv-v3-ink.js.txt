@@ -1,0 +1,84 @@
+  // ink lines: beltline, door seams, roof rails, handles, grille — the pen
+  // strokes that make a silhouette read as an expensive car and not a toy
+  let w = 0;
+  const proj = (x, y, z) => {
+    for (let it = 0; it < 5; it++) { const [d] = sdf(x, y, z); const g = grad(x, y, z);
+      x -= d * g.x; y -= d * g.y; z -= d * g.z; }
+    return [x, y, z];
+  };
+  const LINES = Math.floor(COUNT * 0.055);
+  for (let i = 0; i < LINES && w < COUNT; i++) {
+    let x, y, z; const pick = Math.random();
+    if (pick < 0.36)      { x = -2.32 + Math.random() * 4.62; y = 1.155; z = (Math.random() < 0.5 ? 1 : -1) * 0.93; }  // shoulder line, nose→tail
+    else if (pick < 0.54) { x = [0.58, -0.38, -1.22][Math.floor(Math.random() * 3)];
+                            y = 0.52 + Math.random() * 0.60; z = (Math.random() < 0.5 ? 1 : -1) * 0.92; }              // door seams
+    else if (pick < 0.68) { x = -2.10 + Math.random() * 2.40; y = 1.78; z = (Math.random() < 0.5 ? 1 : -1) * 0.55; }   // roof rails
+    else if (pick < 0.79) { const hx = [0.30, -0.64][Math.floor(Math.random() * 2)];
+                            x = hx + Math.random() * 0.20; y = 1.02; z = (Math.random() < 0.5 ? 1 : -1) * 0.95; }      // flush handles, high
+    else if (pick < 0.90) { x = 2.50; y = 0.62 + Math.random() * 0.36;
+                            z = (Math.floor(Math.random() * 12) - 5.5) * 0.095; }                                      // wide grille slats
+    else if (pick < 0.96) { x = 1.22 + Math.random() * 1.02; y = 1.32; z = (Math.random() < 0.5 ? 1 : -1) * 0.335; }   // power-dome edges
+    else                  { x = -2.48; y = 0.86 + Math.random() * 0.10; z = (Math.random() * 2 - 1) * 0.72; }          // tailgate crease
+    [x, y, z] = proj(x, y, z);
+    put(w++, x, y, z, grad(x, y, z), pick < 0.90 ? 1.7 : 1.5);
+  }
+  // wheels, drawn like wheels: twin spokes, rim ring, hub, and tread flecks on
+  // the tyre edge — the treads are what make the turning visible at the rim
+  const wpt = (x, y, side, tone, axle) => {
+    if (w >= COUNT) return;
+    put(w, x, y, side, new THREE.Vector3(0, 0, side > 0 ? 1 : -1), tone);
+    wheelA[w] = axle; w++;
+  };
+  for (const wx of [1.62, -1.50]) for (const side of [0.90, -0.90]) {
+    const axle = wx > 0 ? 1 : 2;
+    for (let sp = 0; sp < 7; sp++) {                       // seven twin spokes
+      const th0 = (sp / 7) * Math.PI * 2 + (wx > 0 ? 0.3 : 1.1);
+      for (const off of [-0.028, 0.028])
+        for (let j = 0; j < 44; j++) {
+          const rr = 0.07 + (j / 44) * 0.285;              // long spokes = big rim
+          wpt(wx + Math.cos(th0 + off) * rr, 0.52 + Math.sin(th0 + off) * rr, side, 1.7, axle);
+        }
+    }
+    for (let j = 0; j < 170; j++) {                        // 22" rim ring
+      const th = (j / 170) * Math.PI * 2;
+      wpt(wx + Math.cos(th) * 0.365, 0.52 + Math.sin(th) * 0.365, side, 1.9, axle);
+    }
+    for (let j = 0; j < 44; j++) {                         // hub
+      const th = Math.random() * Math.PI * 2, rr = Math.random() * 0.06;
+      wpt(wx + Math.cos(th) * rr, 0.52 + Math.sin(th) * rr, side, 2.1, axle);
+    }
+    for (let j = 0; j < 38; j++) {                         // tread flecks
+      const th = (j / 38) * Math.PI * 2 + 0.09;
+      wpt(wx + Math.cos(th) * 0.50, 0.52 + Math.sin(th) * 0.50, side, 1.35, axle);
+    }
+  }
+  // wheel-arch lips over the flares
+  for (const wx of [1.62, -1.50]) for (const side of [1, -1])
+    for (let j = 0; j < 90 && w < COUNT; j++) {
+      const th = 0.15 * Math.PI + (j / 90) * 0.70 * Math.PI;
+      let x = wx + Math.cos(th) * 0.62, y = 0.52 + Math.sin(th) * 0.62, z = side * 1.02;
+      [x, y, z] = proj(x, y, z);
+      put(w++, x, y, z, grad(x, y, z), 1.55);
+    }
+  // sculpted flank: lower blade + mid-door shoulder crease, alternating
+  for (let j = 0; j < 260 && w < COUNT; j++) {
+    let x = -2.05 + (j / 260) * 3.9, y = j % 2 ? 0.60 : 0.94, z = (j % 4 < 2 ? 1 : -1) * 0.98;
+    [x, y, z] = proj(x, y, z);
+    put(w++, x, y, z, grad(x, y, z), 1.42);
+  }
+  // lamps: SLIM full-width light bar front and rear, with corner clusters —
+  // warm, and proof the car is in service, not parked
+  const LAMPS = Math.floor(COUNT * 0.012);
+  for (let i = 0; i < LAMPS && w < COUNT; i++) {
+    const front = i < LAMPS * 0.55;
+    let x = front ? 2.50 : -2.50, y, z;
+    if (front) { const bar = Math.random() < 0.70;
+      y = bar ? 1.045 + Math.random() * 0.03 : 0.98 + Math.random() * 0.08;
+      z = bar ? (Math.random() * 2 - 1) * 0.74 : (Math.random() < 0.5 ? 1 : -1) * (0.58 + Math.random() * 0.14);
+    } else { const bar = Math.random() < 0.76;
+      y = bar ? 1.10 + Math.random() * 0.028 : 1.03 + Math.random() * 0.07;
+      z = bar ? (Math.random() * 2 - 1) * 0.80 : (Math.random() < 0.5 ? 1 : -1) * (0.68 + Math.random() * 0.12);
+    }
+    [x, y, z] = proj(x, y, z);
+    put(w++, x, y, z, grad(x, y, z), 3.0);
+  }

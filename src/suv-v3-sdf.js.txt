@@ -1,0 +1,56 @@
+function sdf(x, y, z) {
+  const az = Math.abs(z);
+  // deep body, high shoulder: rocker at 0.30, shoulder at 1.18 — the metal is
+  // DEEP so the glasshouse reads shallow. that ratio is the whole modern look.
+  let body = sdRoundBox(x, y - 0.74, az, 2.46, 0.44, 0.86, 0.17);
+  // fender blisters wider than the doors, riding up almost to the beltline
+  for (const wx of [1.62, -1.50]) {
+    const flare = sdRoundBox(x - wx, y - 0.82, az, 0.62, 0.34, 1.00, 0.24);
+    body = Math.min(body, flare);
+  }
+  // one continuous high line nose→tail: the hood tops out AT the shoulder
+  body = Math.max(body, (y - 1.18) + Math.max(x - 1.30, 0.0) * 0.035);
+  // power dome — unioned AFTER the hood cut so it genuinely rises above it
+  const dome = sdRoundBox(x - 1.80, y - 1.13, az, 0.58, 0.12, 0.34, 0.12);
+  body = Math.min(body, dome);
+  body = Math.max(body, (x - 2.35) - (y - 0.30) * 0.095);                   // nose leans FORWARD
+  body = Math.max(body, (x - 2.44) + Math.max(0.40 - y, 0.0) * 0.75);       // front bumper undercut
+  body = Math.max(body, (-x - 2.41) + (y - 0.72) * 0.055);                  // near-flush tailgate
+  body = Math.max(body, (-x - 2.44) + Math.max(0.42 - y, 0.0) * 0.55);      // rear diffuser tuck
+  for (const wx of [1.62, -1.50]) {                                          // tight modern arches
+    const cyl = Math.sqrt((x - wx) * (x - wx) + (y - 0.52) * (y - 0.52)) - 0.585;
+    body = Math.max(body, -Math.max(cyl, 0.60 - az));
+  }
+  const spo = sdRoundBox(x + 2.26, y - 1.60, az, 0.12, 0.045, 0.52, 0.04);  // roof spoiler / ducktail
+  body = Math.min(body, spo);
+  const mir = sdRoundBox(x - 0.86, y - 1.27, az - 0.945, 0.09, 0.05, 0.06, 0.03);
+  body = Math.min(body, mir);
+  // greenhouse: shallow band, fast screen, tapering roof, D-pillar kicked forward
+  let gh = sdRoundBox(x + 0.55, y - 1.44, az, 1.85, 0.32, 0.70, 0.11);
+  gh = Math.max(gh, (x - 1.02) * 0.62 + (y - 1.18) * 0.785);                // fast raked screen
+  gh = Math.max(gh, (y - 1.735) + Math.max(-x - 0.32, 0.0) * 0.048);        // roof tapers rearward
+  gh = Math.max(gh, (-x - 2.36) * 0.96 + (y - 1.16) * 0.22);                // D-pillar forward kick
+  let wheel = 1e9;
+  for (const wx of [1.62, -1.50]) {                                          // 22-inch stance
+    const qx = Math.sqrt((x - wx) * (x - wx) + (y - 0.52) * (y - 0.52)) - 0.375;
+    const d = Math.sqrt(qx * qx + (az - 0.84) * (az - 0.84)) - 0.125;
+    wheel = Math.min(wheel, d);
+  }
+  let d = body, m = 0;
+  if (gh < d) { d = gh; m = 1; }
+  if (wheel < d) { d = wheel; m = 2; }
+  return [d, m];
+}
+const EPS = 0.012;
+const grad = (x, y, z) => new THREE.Vector3(
+  sdf(x + EPS, y, z)[0] - sdf(x - EPS, y, z)[0],
+  sdf(x, y + EPS, z)[0] - sdf(x, y - EPS, z)[0],
+  sdf(x, y, z + EPS)[0] - sdf(x, y, z - EPS)[0]).normalize();
+
+// GLASS PLANES MOVED — update the surface-fill glass classifier to exactly:
+//   const ws = (x - 1.14) * 0.62 + (y - 1.18) * 0.785;   // windscreen plane (offset from the sdf cut)
+//   const rr = (-x - 2.46) * 0.96 + (y - 1.16) * 0.22;   // tailgate glass plane (offset from the sdf cut)
+//   const isGlass = m === 1 && y > 1.22 && y < 1.66 && ws < -0.06 && rr < -0.06;
+// and re-centre the glass reflection streak on the raised glasshouse:
+//   const band = Math.exp(-Math.pow(x * 0.55 + (y - 1.42) * 1.9 - 0.30, 2) / 0.055);
+

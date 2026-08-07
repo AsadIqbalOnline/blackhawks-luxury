@@ -1,0 +1,1118 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Blackhawks — chauffeured luxury transport for tour operators in Dubai. Range Rover and Cadillac Escalade, chauffeur included.">
+<title>Blackhawks — Chauffeured Luxury Transport, Dubai</title>
+<style>
+  :root{
+    --ground:#08090B; --ink-3:#7C7A76; --ink-2:#A7A4A0; --ink:#EDEAE5;
+    --rule: color-mix(in oklab, var(--ink) 12%, var(--ground));
+    --body:"Avenir Next",Avenir,-apple-system,system-ui,sans-serif;
+    --mono:ui-monospace,"SF Mono",Menlo,monospace;
+    --safe:40px; --measure-h:560px; --measure-b:380px;
+  }
+  @media (max-width:760px){ :root{--safe:28px} }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--ground);color:var(--ink);font-family:var(--body);
+    -webkit-font-smoothing:antialiased;overflow-x:hidden}
+
+  #stage{position:fixed;inset:0;z-index:0}
+  #c{width:100%;height:100%;display:block}
+  #vig{position:fixed;inset:0;z-index:1;pointer-events:none;
+    background:radial-gradient(130% 96% at 50% 46%, transparent 42%, #000 100%);opacity:.55}
+
+  #mark{position:fixed;top:var(--safe);left:var(--safe);z-index:4;font-size:20px;
+    line-height:20px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--ink);text-decoration:none}
+  #mark span{color:var(--ink-3)}
+  #need{position:fixed;top:var(--safe);right:var(--safe);z-index:4;font-family:var(--mono);
+    font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:#5E4E33;
+    text-align:right;line-height:1.8}
+
+  #track{position:relative;z-index:2}
+  .beat{height:140vh;position:relative}
+  .beat:nth-child(3){height:150vh}
+  .copy{position:sticky;top:14vh;margin-left:var(--safe);
+    width:var(--measure-h);max-width:calc(100vw - var(--safe)*2)}
+  /* hero copy lives in the photograph's dead black — upper left, above the roofline */
+  .beat:first-child .copy{top:10vh}
+  .eyebrow{font-family:var(--mono);font-size:11px;line-height:16px;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--ink-2);margin-bottom:24px}
+  .d1{font-size:40px;line-height:48px;font-weight:500;letter-spacing:.002em;color:var(--ink)}
+  .b1{font-size:17px;line-height:27px;color:var(--ink-2);max-width:var(--measure-b);margin-top:20px}
+  @media (max-width:760px){
+    .d1{font-size:26px;line-height:32px}
+    .b1{font-size:16px;line-height:26px;margin-top:16px}
+    .copy{top:58vh}
+  }
+
+  /* page three arrives on glass, over the living desert. glossy glass, not
+     low-opacity grey: a sheen gradient + heavy blur + saturation, per the
+     standing build rules — it must read as glass even over darkness. */
+  #next{position:relative;z-index:2;min-height:100vh;display:flex;
+    align-items:center;justify-content:center;padding:8vh var(--safe) 8vh}
+  .glass{width:min(680px, 92vw);border-radius:22px;padding:52px 56px;
+    background:linear-gradient(165deg, rgba(255,255,255,.11), rgba(255,255,255,.04) 42%, rgba(255,255,255,.015));
+    -webkit-backdrop-filter:blur(26px) saturate(1.5);
+    backdrop-filter:blur(26px) saturate(1.5);
+    border:1px solid rgba(255,255,255,.15);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.20), 0 40px 90px rgba(0,0,0,.55)}
+  .glass .d1{margin:10px 0 14px}
+  .actions{display:flex;gap:28px;margin-top:26px;flex-wrap:wrap}
+  .actions a{font-size:14px;font-weight:500;letter-spacing:.10em;text-transform:uppercase;
+    color:var(--ink-2);text-decoration:none;border-bottom:1px solid rgba(255,255,255,.2);
+    padding-bottom:8px;transition:color .22s,border-color .22s}
+  .actions a:hover{color:var(--ink);border-color:var(--ink)}
+  .note{font-family:var(--mono);font-size:10px;line-height:1.8;letter-spacing:.06em;
+    color:var(--ink-3);margin-top:34px}
+
+  :focus-visible{outline:1px solid var(--ink);outline-offset:4px}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<div id="stage"><canvas id="c"></canvas></div>
+<div id="vig"></div>
+
+<a id="mark" href="#">BLACKHAWKS</a>
+
+<main id="track">
+
+  <section class="beat">
+    <div class="copy">
+      <p class="eyebrow">Chauffeured cars for tour operators &middot; Dubai</p>
+      <h1 class="d1">Your client does not open the door.</h1>
+      <p class="b1">Met by name at the barrier. The bags are moving before the greeting is finished.</p>
+    </div>
+  </section>
+
+  <section class="beat">
+    <div class="copy">
+      <h2 class="d1">The day can go anywhere.</h2>
+      <p class="b1">Dunes at six, dinner at nine. Same car, same chauffeur &mdash; and one call to you if anything changes. Nothing changes.</p>
+    </div>
+  </section>
+
+  <section class="beat">
+    <div class="copy">
+      <h2 class="d1">Your operator hears nothing all day.</h2>
+      <p class="b1">Which is the only review that matters.</p>
+    </div>
+  </section>
+
+</main>
+
+<!-- the desert never stops. the next page arrives OVER it, on glass — the live
+     scene stays visible and moving behind the panel. -->
+<section id="next">
+  <div class="glass">
+    <p class="eyebrow">Next</p>
+    <h2 class="d1">Send us a day.</h2>
+    <p class="b1">A date, a flight number, a headcount. Range Rover and Cadillac Escalade, chauffeur included.</p>
+    <nav class="actions">
+      <a href="mailto:enquiries@blackhawks.luxury">Email us a day</a>
+    </nav>
+    <p class="note">Content of this page is the next decision &mdash; the glass is the mechanism.</p>
+  </div>
+</section>
+
+<script type="importmap">
+{ "imports": { "three": "./vendor/three.module.min.js" } }
+</script>
+
+<script type="module">
+import * as THREE from 'three';
+
+// the browser restores scroll on reload and fires a LATE scroll event that
+// yanks the page mid-journey — the hero must always enter from the top
+history.scrollRestoration = 'manual';
+
+/* THE SEQUENCE — Asad's storyboard, verbatim:
+   1. The REAL world: a photograph — luxury car, chauffeur's hand on the door.
+   2. The photograph BREAKS into particles.
+   3. The particles re-form as the four-door SUV — and a desert rises under it:
+      where the day can go.
+   4. The particles go away. The next page is the next decision.
+
+   Every particle lives three lives: a pixel of the photograph, a mote in flight,
+   a point on the car. One journey value drives all of it. */
+
+let points = null, uni = null, plane = null, desert = null, dUni = null;
+window.__status = ['script-ran'];
+
+const touch = matchMedia('(hover:none)').matches;
+const GRID_W = touch ? 420 : 720;
+const GRID_H = touch ? 210 : 360;
+const COUNT = GRID_W * GRID_H;            // every particle is a pixel of the photo
+const DESERT_N = touch ? 170000 : 620000;
+
+const TAU_SCROLL = 0.14, TAU_CURSOR = 0.05;
+const k = (dt, tau) => 1 - Math.exp(-dt / tau);
+
+const canvas = document.getElementById('c');
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: false, alpha: false, preserveDrawingBuffer: true });
+renderer.setPixelRatio(Math.min(devicePixelRatio, touch ? 1.5 : 2));
+renderer.setSize(innerWidth, innerHeight);
+renderer.setClearColor(0x08090B, 1);
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(36, innerWidth / innerHeight, 0.1, 120);
+
+/* BEATS — jou: 0 photograph … 1 car+desert. exit: 1 = the car has driven out.
+   B0 faces the photograph dead-on. B1 is the desert at standing eye height.
+   B2 pulls back and lets go. */
+const BEATS = [
+  { az: 0.00,  el: 0.045, dist: 9.4,  x: 0.0, jou: 0, exit: 0 },
+  { az: -1.62, el: 0.155, dist: 10.6, x: 1.0, jou: 1, exit: 0 },
+  { az: -1.48, el: 0.15,  dist: 11.2, x: 0.4, jou: 1, exit: 1 },
+];
+
+/* ---------- the SUV, as geometry (no model file exists to license) ---------- */
+const sdRoundBox = (px, py, pz, hx, hy, hz, r) => {
+  const qx = Math.abs(px) - hx + r, qy = Math.abs(py) - hy + r, qz = Math.abs(pz) - hz + r;
+  const ax = Math.max(qx, 0), ay = Math.max(qy, 0), az = Math.max(qz, 0);
+  return Math.sqrt(ax*ax + ay*ay + az*az) + Math.min(Math.max(qx, Math.max(qy, qz)), 0) - r;
+};
+function sdf(x, y, z) {
+  const az = Math.abs(z);
+  // deep body, high shoulder: rocker at 0.30, shoulder at 1.18 — the metal is
+  // DEEP so the glasshouse reads shallow. that ratio is the whole modern look.
+  let body = sdRoundBox(x, y - 0.74, az, 2.46, 0.44, 0.86, 0.17);
+  // fender blisters wider than the doors, riding up almost to the beltline
+  for (const wx of [1.62, -1.50]) {
+    const flare = sdRoundBox(x - wx, y - 0.82, az, 0.62, 0.34, 1.00, 0.24);
+    body = Math.min(body, flare);
+  }
+  // one continuous high line nose→tail: the hood tops out AT the shoulder
+  body = Math.max(body, (y - 1.18) + Math.max(x - 1.30, 0.0) * 0.035);
+  // power dome — unioned AFTER the hood cut so it genuinely rises above it
+  const dome = sdRoundBox(x - 1.80, y - 1.13, az, 0.58, 0.12, 0.34, 0.12);
+  body = Math.min(body, dome);
+  body = Math.max(body, (x - 2.35) - (y - 0.30) * 0.095);                   // nose leans FORWARD
+  body = Math.max(body, (x - 2.44) + Math.max(0.40 - y, 0.0) * 0.75);       // front bumper undercut
+  body = Math.max(body, (-x - 2.41) + (y - 0.72) * 0.055);                  // near-flush tailgate
+  body = Math.max(body, (-x - 2.44) + Math.max(0.42 - y, 0.0) * 0.55);      // rear diffuser tuck
+  for (const wx of [1.62, -1.50]) {                                          // tight modern arches
+    const cyl = Math.sqrt((x - wx) * (x - wx) + (y - 0.52) * (y - 0.52)) - 0.585;
+    body = Math.max(body, -Math.max(cyl, 0.60 - az));
+  }
+  const spo = sdRoundBox(x + 2.26, y - 1.60, az, 0.12, 0.045, 0.52, 0.04);  // roof spoiler / ducktail
+  body = Math.min(body, spo);
+  const mir = sdRoundBox(x - 0.86, y - 1.27, az - 0.945, 0.09, 0.05, 0.06, 0.03);
+  body = Math.min(body, mir);
+  // greenhouse: shallow band, fast screen, tapering roof, D-pillar kicked forward
+  let gh = sdRoundBox(x + 0.55, y - 1.44, az, 1.85, 0.32, 0.70, 0.11);
+  gh = Math.max(gh, (x - 1.02) * 0.62 + (y - 1.18) * 0.785);                // fast raked screen
+  gh = Math.max(gh, (y - 1.735) + Math.max(-x - 0.32, 0.0) * 0.048);        // roof tapers rearward
+  gh = Math.max(gh, (-x - 2.36) * 0.96 + (y - 1.16) * 0.22);                // D-pillar forward kick
+  let wheel = 1e9;
+  for (const wx of [1.62, -1.50]) {                                          // 22-inch stance
+    const qx = Math.sqrt((x - wx) * (x - wx) + (y - 0.52) * (y - 0.52)) - 0.375;
+    const d = Math.sqrt(qx * qx + (az - 0.84) * (az - 0.84)) - 0.125;
+    wheel = Math.min(wheel, d);
+  }
+  let d = body, m = 0;
+  if (gh < d) { d = gh; m = 1; }
+  if (wheel < d) { d = wheel; m = 2; }
+  return [d, m];
+}
+const EPS = 0.012;
+const grad = (x, y, z) => new THREE.Vector3(
+  sdf(x + EPS, y, z)[0] - sdf(x - EPS, y, z)[0],
+  sdf(x, y + EPS, z)[0] - sdf(x, y - EPS, z)[0],
+  sdf(x, y, z + EPS)[0] - sdf(x, y, z - EPS)[0]).normalize();
+
+// GLASS PLANES MOVED — update the surface-fill glass classifier to exactly:
+//   const ws = (x - 1.14) * 0.62 + (y - 1.18) * 0.785;   // windscreen plane (offset from the sdf cut)
+//   const rr = (-x - 2.46) * 0.96 + (y - 1.16) * 0.22;   // tailgate glass plane (offset from the sdf cut)
+//   const isGlass = m === 1 && y > 1.22 && y < 1.66 && ws < -0.06 && rr < -0.06;
+// and re-centre the glass reflection streak on the raised glasshouse:
+//   const band = Math.exp(-Math.pow(x * 0.55 + (y - 1.42) * 1.9 - 0.30, 2) / 0.055);
+
+/* ---------- shaders ---------- */
+const VS = `
+uniform float uJourney;    // 0 photograph … 1 car
+uniform float uTime;
+uniform float uRoll;       // wheel angle — the wheels genuinely turn
+uniform float uDriveAmt;   // 1 while driving: body sway, alive
+uniform float uCarLift;    // terrain height under the car — it rides the dunes
+uniform float uCarSlope;   // terrain slope — the body pitches over crests
+uniform float uExit;       // metres driven OUT of frame at the end
+uniform float uExitFade;   // the dark closing over it — gone at ANY camera angle
+uniform vec3  uMouse;
+uniform float uPix;
+uniform sampler2D uMap;    // the photograph — each particle carries its pixel
+uniform vec3  uPlaneC, uPlaneR, uPlaneU;   // photo plane frame (full extents)
+attribute vec2  aGrid;     // this particle's pixel of the photograph
+attribute vec3  aScatter;  // flight control point
+attribute float aDelay;    // launch order: the image tears from one edge
+attribute float aSize;
+attribute float aSeed;
+attribute vec3  aNormal;
+attribute float aTone;
+attribute float aWheel;    // 0 body · 1 front axle · 2 rear axle
+varying vec3  vPhoto;
+varying float vHot;        // lamps
+varying float vMixG;       // 0 photo colour … 1 ghost light
+varying float vGlow;
+varying float vSheen;
+varying float vRim;
+varying float vTone;
+varying float vA;
+
+vec3 drift(vec3 p, float t, float s){
+  return vec3(
+    sin(t*0.29 + s*17.0 + p.y*0.9),
+    sin(t*0.22 + s*29.0 + p.x*0.7),
+    sin(t*0.26 + s*23.0 + p.z*0.8));
+}
+
+void main(){
+  // staggered launch: pixels leave the photograph in a sweep, not all at once
+  float tJ = clamp((uJourney * 1.02 - aDelay * 0.62) / 0.40, 0.0, 1.0);
+  float e  = tJ * tJ * (3.0 - 2.0 * tJ);
+
+  // wheels rotate about their axle (world z,y — length runs along z, nose at -z)
+  vec3 target = position;
+  if (aWheel > 0.5) {
+    vec2 ax = aWheel < 1.5 ? vec2(-1.525, 0.489) : vec2(1.412, 0.489);
+    float c = cos(uRoll), sn = sin(uRoll);
+    vec2 d = vec2(position.z - ax.x, position.y - ax.y);
+    target.z = ax.x + c * d.x - sn * d.y;
+    target.y = ax.y + sn * d.x + c * d.y;
+  }
+
+  vec3 photoPos = uPlaneC + uPlaneR * (aGrid.x - 0.5) + uPlaneU * (aGrid.y - 0.5);
+  // quadratic bezier: photograph -> chaos -> car. bell() adds turbulence only
+  // mid-flight, so both endpoints are exact.
+  float bell = e * (1.0 - e) * 4.0;
+  vec3 p = mix(mix(photoPos, aScatter, e), mix(aScatter, target, e), e);
+  p += drift(aScatter, uTime, aSeed) * bell * 0.9;
+
+  // alive: the body breathes over the road while driving. wheels are excluded —
+  // suspension moves the body, not the axles.
+  if (aWheel < 0.5) {
+    p.y += (sin(uTime*2.2) + 0.5*sin(uTime*3.7)) * 0.016 * uDriveAmt * e;
+    p.x += sin(uTime*1.6 + p.z*0.4) * 0.008 * uDriveAmt * e;
+  }
+
+  // the car does not evaporate at the end — it DRIVES OUT, the way it came to
+  // exist: by being in service. heading is -z; suspension carries the body
+  // over the dunes (lift + pitch), applied only once assembled.
+  p.y += (uCarLift + p.z * uCarSlope) * e;
+  p.z -= uExit;
+
+  // the hand: the formed car yields around the cursor and reforms behind it
+  vec3 dm = p - uMouse;
+  float r2 = dot(dm, dm);
+  float push = exp(-r2 * 5.0) * e;
+  p += (dm / max(sqrt(r2), 0.05)) * push * 0.5;
+
+  vPhoto = texture2D(uMap, vec2(aGrid.x, 1.0 - aGrid.y)).rgb;
+  vHot = step(2.5, aTone);
+  vMixG  = smoothstep(0.10, 0.72, tJ);
+  vGlow  = push * 1.6;
+  vSheen = max(aNormal.y, 0.0);
+  vTone  = mix(1.0, aTone, vMixG);
+  // hidden while its pixel still lives on the photograph; alive in flight and
+  // after. thinned mid-flight — a quarter-million points at full alpha is a
+  // blizzard, not a tear.
+  vA = smoothstep(0.001, 0.05, tJ) * (1.0 - bell * 0.62) * (1.0 - uExitFade);
+
+  vec4 mv = modelViewMatrix * vec4(p, 1.0);
+  vec3 nV = normalize(normalMatrix * aNormal);
+  vRim = pow(1.0 - abs(dot(nV, normalize(-mv.xyz))), 2.0) * e;
+  gl_Position = projectionMatrix * mv;
+  // clamp: at dpr 1 a sub-pixel additive point simply vanishes
+  gl_PointSize = max(aSize * uPix * (10.0 / -mv.z), 1.30);
+}`;
+
+const FS = `
+precision highp float;
+varying vec3  vPhoto;
+varying float vMixG;
+varying float vGlow;
+varying float vSheen;
+varying float vRim;
+varying float vTone;
+varying float vHot;
+varying float vA;
+void main(){
+  vec2 q = gl_PointCoord - 0.5;
+  float a = smoothstep(0.5, 0.06, length(q));
+  vec3 cool = vec3(0.60, 0.70, 0.92);
+  vec3 warm = vec3(0.98, 0.82, 0.58);
+  vec3 ghost = mix(cool, warm, vSheen * 0.45) * (0.40 + vSheen * 0.30 + vRim * 1.15 + vGlow) * vTone;
+  ghost = mix(ghost, vec3(1.0, 0.86, 0.62) * 1.7, vHot);   // lamps burn warm
+  // a torn-off pixel carries its photo colour, then cools into ghost light
+  vec3 c = mix(vPhoto * 1.10, ghost, vMixG);
+  gl_FragColor = vec4(c, a * 0.62 * vA);
+}`;
+
+const DESERT_VS = `
+uniform float uReveal;
+uniform float uDrive;
+uniform float uTime;
+uniform float uPix;
+uniform float uCarZ;       // where the car is (it leaves on exit — shadow follows)
+uniform float uCarOn;
+attribute vec2  aXZ;
+attribute float aJit;
+attribute float aSpark;
+varying float vB;
+varying float vA;
+varying float vT;
+
+const float L = 66.0;
+
+/* heights come from the BASE coordinate, not the render coordinate — the dune
+   SHAPES are attached to the sand and stream past the car with it. (computed
+   from the render coord, the surface is frozen and only dots slide over it —
+   that reads as wind, not driving.) every z-frequency divides TAU/L, so the
+   loop is seamless: no start, no end. */
+float duneH(float x, float z){
+  float kk = 6.2831853 / L;
+  float zk = z * kk;
+  float skew = zk + 0.30 * sin(zk);         // soft asymmetry, not a broken edge
+  float A = 0.62 + 0.30 * smoothstep(3.0, 18.0, abs(x));
+  // TRANSVERSE dunes: ridges run across the travel direction, phase almost
+  // constant sideways — so the wave the eye tracks beside the car is the exact
+  // wave the car pitches over. phase-shifting with x decoupled pose from picture.
+  float h = sin(skew*2.0 + 1.7 + 0.30*sin(x*0.13)) * 1.02
+          + 0.42*sin(zk + 0.5 + 0.22*sin(x*0.17 + 1.0))
+          + 0.12*sin(zk*5.0 + x*0.30 + 0.7);
+  return h * A - 0.02;
+}
+
+void main(){
+  float x  = aXZ.x;
+  float z0 = aXZ.y;
+  float z  = mod(z0 + uDrive, L) - L * 0.5;   // where this grain RENDERS
+  float h  = duneH(x, z0);                     // its height rides WITH it
+  float hx = duneH(x + 0.5, z0) - duneH(x - 0.5, z0);
+
+  // fine surface ripples — geometry near the camera, not just brightness
+  float near = 1.0 - smoothstep(6.0, 15.0, length(vec2(x, z)));
+  float rip = sin(x*7.0 + z0*(6.2831853/L)*23.0) + 0.5*sin(x*3.1 - z0*(6.2831853/L)*15.0);
+  vec3 p = vec3(x, h + aJit*0.05 + rip*0.024*near - (1.0 - uReveal)*1.4, z);
+
+  float dHaze = 1.0 - 0.28 * smoothstep(8.0, 30.0, length(vec2(x, z)));
+  float twinkle = 1.0 + aSpark * 0.6 * sin(uTime*2.6 + aJit*91.0);
+  vB = clamp(0.85 + hx*1.5 + rip*0.11 + aSpark, 0.34, 1.4)
+     * (0.75 + 0.25*clamp(h*0.45 + 0.5, 0.0, 1.0)) * dHaze * twinkle;
+  vT = aJit;
+  // the car presses a soft shadow into the sand — in an additive world a
+  // shadow is the absence of light, so the grains under the car go quiet
+  float shadow = min(1.0, 1.07 * exp(-pow(pow(x / 1.12, 2.0) + pow((z - uCarZ) / 2.30, 2.0), 1.9))) * uCarOn;
+  // ...and where each tyre presses, the sand catches light: four bow-waves at
+  // the contact patches. contact is the thing the eye needs to believe ground.
+  float zF = uCarZ - 1.525, zR = uCarZ + 1.412;
+  float bow = exp(-(pow(x - 0.79, 2.0) + pow(z - zF, 2.0)) * 9.0)
+            + exp(-(pow(x + 0.79, 2.0) + pow(z - zF, 2.0)) * 9.0)
+            + exp(-(pow(x - 0.79, 2.0) + pow(z - zR, 2.0)) * 9.0)
+            + exp(-(pow(x + 0.79, 2.0) + pow(z - zR, 2.0)) * 9.0);
+  vB *= 1.0 + bow * 1.7 * uCarOn;
+  vA = uReveal * smoothstep(33.0, 22.0, length(vec2(x, z))) * (1.0 - shadow * 0.82);
+
+  vec4 mv = modelViewMatrix * vec4(p, 1.0);
+  gl_Position = projectionMatrix * mv;
+  gl_PointSize = max(1.15 * uPix * (12.5 / -mv.z), 1.45);
+}`;
+
+const DESERT_FS = `
+precision highp float;
+varying float vB;
+varying float vA;
+varying float vT;
+void main(){
+  vec2 q = gl_PointCoord - 0.5;
+  float a = smoothstep(0.5, 0.1, length(q));
+  // two sands: deep gold and sun-bleached pale — real dunes are never one colour
+  vec3 sand = mix(vec3(1.0, 0.78, 0.52), vec3(0.94, 0.88, 0.74), vT * 0.55) * vB;
+  gl_FragColor = vec4(sand, a * 0.78 * vA);
+}`;
+
+/* ---------- build ---------- */
+try {
+  // the photograph — the realistic world all of this comes from
+  const tex = new THREE.TextureLoader().load('img/hero.png', () => { __status.push('photo-loaded'); wake(); });
+  tex.colorSpace = THREE.NoColorSpace;   // raw passthrough: the PNG as it looks on disk
+  tex.minFilter = THREE.LinearFilter;
+  tex.generateMipmaps = false;
+
+  const S = 4.8 / 5.1;
+  const tgt = new Float32Array(COUNT * 3);
+  const gridA = new Float32Array(COUNT * 2);
+  const scat = new Float32Array(COUNT * 3);
+  const delay = new Float32Array(COUNT);
+  const sizeA = new Float32Array(COUNT);
+  const seed = new Float32Array(COUNT);
+  const nrm3 = new Float32Array(COUNT * 3);
+  const tone = new Float32Array(COUNT);
+  const wheelA = new Float32Array(COUNT);   // 0 body · 1 front axle · 2 rear axle
+
+  const put = (w, x, y, z, n, t) => {
+    // nose at -z: the side/desert beat reads the flank and rear door — the offer
+    tgt[w*3] = z * S; tgt[w*3+1] = y * S; tgt[w*3+2] = -x * S;
+    nrm3[w*3] = n.z; nrm3[w*3+1] = n.y; nrm3[w*3+2] = -n.x;
+    tone[w] = t;
+    // flight control point: a wide cloud between the photo plane and the car
+    const r = 5 + Math.random() * 8, th = Math.random() * Math.PI * 2;
+    scat[w*3] = Math.cos(th) * r;
+    scat[w*3+1] = 1.2 + Math.random() * 3.2;
+    scat[w*3+2] = Math.sin(th) * r * 0.7 + 1.5;
+    sizeA[w] = 0.55 + Math.random() * 1.05;
+    seed[w] = Math.random() * 10;
+  };
+
+  // ink lines: beltline, door seams, roof rails, handles, grille — the pen
+  // strokes that make a silhouette read as an expensive car and not a toy
+  let w = 0;
+  const proj = (x, y, z) => {
+    for (let it = 0; it < 5; it++) { const [d] = sdf(x, y, z); const g = grad(x, y, z);
+      x -= d * g.x; y -= d * g.y; z -= d * g.z; }
+    return [x, y, z];
+  };
+  const LINES = Math.floor(COUNT * 0.055);
+  for (let i = 0; i < LINES && w < COUNT; i++) {
+    let x, y, z; const pick = Math.random();
+    if (pick < 0.36)      { x = -2.32 + Math.random() * 4.62; y = 1.155; z = (Math.random() < 0.5 ? 1 : -1) * 0.93; }  // shoulder line, nose→tail
+    else if (pick < 0.54) { x = [0.58, -0.38, -1.22][Math.floor(Math.random() * 3)];
+                            y = 0.52 + Math.random() * 0.60; z = (Math.random() < 0.5 ? 1 : -1) * 0.92; }              // door seams
+    else if (pick < 0.68) { x = -2.10 + Math.random() * 2.40; y = 1.78; z = (Math.random() < 0.5 ? 1 : -1) * 0.55; }   // roof rails
+    else if (pick < 0.79) { const hx = [0.30, -0.64][Math.floor(Math.random() * 2)];
+                            x = hx + Math.random() * 0.20; y = 1.02; z = (Math.random() < 0.5 ? 1 : -1) * 0.95; }      // flush handles, high
+    else if (pick < 0.90) { x = 2.50; y = 0.62 + Math.random() * 0.36;
+                            z = (Math.floor(Math.random() * 12) - 5.5) * 0.095; }                                      // wide grille slats
+    else if (pick < 0.96) { x = 1.22 + Math.random() * 1.02; y = 1.32; z = (Math.random() < 0.5 ? 1 : -1) * 0.335; }   // power-dome edges
+    else                  { x = -2.48; y = 0.86 + Math.random() * 0.10; z = (Math.random() * 2 - 1) * 0.72; }          // tailgate crease
+    [x, y, z] = proj(x, y, z);
+    put(w++, x, y, z, grad(x, y, z), pick < 0.90 ? 1.7 : 1.5);
+  }
+  // wheels, drawn like wheels: twin spokes, rim ring, hub, and tread flecks on
+  // the tyre edge — the treads are what make the turning visible at the rim
+  const wpt = (x, y, side, tone, axle) => {
+    if (w >= COUNT) return;
+    put(w, x, y, side, new THREE.Vector3(0, 0, side > 0 ? 1 : -1), tone);
+    wheelA[w] = axle; w++;
+  };
+  for (const wx of [1.62, -1.50]) for (const side of [0.90, -0.90]) {
+    const axle = wx > 0 ? 1 : 2;
+    for (let sp = 0; sp < 7; sp++) {                       // seven twin spokes
+      const th0 = (sp / 7) * Math.PI * 2 + (wx > 0 ? 0.3 : 1.1);
+      for (const off of [-0.028, 0.028])
+        for (let j = 0; j < 44; j++) {
+          const rr = 0.07 + (j / 44) * 0.285;              // long spokes = big rim
+          wpt(wx + Math.cos(th0 + off) * rr, 0.52 + Math.sin(th0 + off) * rr, side, 1.7, axle);
+        }
+    }
+    for (let j = 0; j < 170; j++) {                        // 22" rim ring
+      const th = (j / 170) * Math.PI * 2;
+      wpt(wx + Math.cos(th) * 0.365, 0.52 + Math.sin(th) * 0.365, side, 1.9, axle);
+    }
+    for (let j = 0; j < 44; j++) {                         // hub
+      const th = Math.random() * Math.PI * 2, rr = Math.random() * 0.06;
+      wpt(wx + Math.cos(th) * rr, 0.52 + Math.sin(th) * rr, side, 2.1, axle);
+    }
+    for (let j = 0; j < 38; j++) {                         // tread flecks
+      const th = (j / 38) * Math.PI * 2 + 0.09;
+      wpt(wx + Math.cos(th) * 0.50, 0.52 + Math.sin(th) * 0.50, side, 1.35, axle);
+    }
+  }
+  // wheel-arch lips over the flares
+  for (const wx of [1.62, -1.50]) for (const side of [1, -1])
+    for (let j = 0; j < 90 && w < COUNT; j++) {
+      const th = 0.15 * Math.PI + (j / 90) * 0.70 * Math.PI;
+      let x = wx + Math.cos(th) * 0.62, y = 0.52 + Math.sin(th) * 0.62, z = side * 1.02;
+      [x, y, z] = proj(x, y, z);
+      put(w++, x, y, z, grad(x, y, z), 1.55);
+    }
+  // sculpted flank: lower blade + mid-door shoulder crease, alternating
+  for (let j = 0; j < 260 && w < COUNT; j++) {
+    let x = -2.05 + (j / 260) * 3.9, y = j % 2 ? 0.60 : 0.94, z = (j % 4 < 2 ? 1 : -1) * 0.98;
+    [x, y, z] = proj(x, y, z);
+    put(w++, x, y, z, grad(x, y, z), 1.42);
+  }
+  // lamps: SLIM full-width light bar front and rear, with corner clusters —
+  // warm, and proof the car is in service, not parked
+  const LAMPS = Math.floor(COUNT * 0.012);
+  for (let i = 0; i < LAMPS && w < COUNT; i++) {
+    const front = i < LAMPS * 0.55;
+    let x = front ? 2.50 : -2.50, y, z;
+    if (front) { const bar = Math.random() < 0.70;
+      y = bar ? 1.045 + Math.random() * 0.03 : 0.98 + Math.random() * 0.08;
+      z = bar ? (Math.random() * 2 - 1) * 0.74 : (Math.random() < 0.5 ? 1 : -1) * (0.58 + Math.random() * 0.14);
+    } else { const bar = Math.random() < 0.76;
+      y = bar ? 1.10 + Math.random() * 0.028 : 1.03 + Math.random() * 0.07;
+      z = bar ? (Math.random() * 2 - 1) * 0.80 : (Math.random() < 0.5 ? 1 : -1) * (0.68 + Math.random() * 0.12);
+    }
+    [x, y, z] = proj(x, y, z);
+    put(w++, x, y, z, grad(x, y, z), 3.0);
+  }
+  // surface fill — seeded: a small honest rejection pass finds the surface,
+  // then the bulk jitters off those seeds (full rejection at 260k takes seconds)
+  const seeds = [];
+  let guard = 0;
+  while (seeds.length < 12000 && guard++ < 700000) {
+    let x = -2.75 + Math.random() * 5.5, y = Math.random() * 1.95, z = -1.15 + Math.random() * 2.3;
+    let ok = false;
+    for (let it = 0; it < 5; it++) {
+      const [d] = sdf(x, y, z);
+      if (Math.abs(d) < 0.004) { ok = true; break; }
+      const g = grad(x, y, z); x -= d * g.x; y -= d * g.y; z -= d * g.z;
+    }
+    if (ok && y >= 0.02) seeds.push([x, y, z]);
+  }
+  while (w < COUNT) {
+    const sd = seeds[(Math.random() * seeds.length) | 0];
+    let x = sd[0] + (Math.random() - 0.5) * 0.26,
+        y = sd[1] + (Math.random() - 0.5) * 0.26,
+        z = sd[2] + (Math.random() - 0.5) * 0.26;
+    let ok = false, m = 0;
+    for (let it = 0; it < 4; it++) {
+      const [d, mm] = sdf(x, y, z); m = mm;
+      if (Math.abs(d) < 0.005) { ok = true; break; }
+      const g = grad(x, y, z); x -= d * g.x; y -= d * g.y; z -= d * g.z;
+    }
+    if (!ok || y < 0.02) continue;
+    // exterior surfaces only: step outward along the normal — from the skin you
+    // reach open air; from a wheel-well wall you hit the wheel. interior shells
+    // read as hot discs through an additive ghost.
+    {
+      const g = grad(x, y, z);
+      if (sdf(x + g.x * 0.35, y + g.y * 0.35, z + g.z * 0.35)[0] < 0.22) continue;
+    }
+    let t = 1.0;
+    const ws = (x - 1.14) * 0.62 + (y - 1.18) * 0.785;
+    const rr = (-x - 2.46) * 0.96 + (y - 1.16) * 0.22;
+    const isGlass = m === 1 && y > 1.22 && y < 1.66 && ws < -0.06 && rr < -0.06;
+    if (isGlass) {
+      // SOLID smoked glass with one diagonal reflection streak
+      const band = Math.exp(-Math.pow(x * 0.55 + (y - 1.40) * 1.9 - 0.42, 2) / 0.055);
+      t = 0.62 + band * 0.75;
+    }
+    if (m === 2) t = 1.15;
+    put(w, x, y, z, grad(x, y, z), t);
+    if (m === 2) wheelA[w] = x > 0 ? 1 : 2;   // tyres turn with their spokes
+    w++;
+  }
+  // top up if rejection sampling fell short — reuse earlier targets
+  for (; w < COUNT; w++) {
+    const src = (Math.random() * w) | 0;
+    tgt.copyWithin(w*3, src*3, src*3+3); nrm3.copyWithin(w*3, src*3, src*3+3);
+    tone[w] = tone[src];
+    const r = 5 + Math.random() * 8, th = Math.random() * Math.PI * 2;
+    scat[w*3] = Math.cos(th) * r; scat[w*3+1] = 1.2 + Math.random() * 3.2;
+    scat[w*3+2] = Math.sin(th) * r * 0.7 + 1.5;
+    sizeA[w] = 0.55 + Math.random() * 1.05; seed[w] = Math.random() * 10;
+  }
+  __status.push('suv-sampled n=' + w);
+
+  // each particle is a pixel of the photograph, assigned in shuffled order so
+  // the car isn't striped by image rows; the tear sweeps by image column.
+  const idx = Array.from({ length: COUNT }, (_, i) => i);
+  for (let i = COUNT - 1; i > 0; i--) { const j = (Math.random() * (i + 1)) | 0; [idx[i], idx[j]] = [idx[j], idx[i]]; }
+  for (let i = 0; i < COUNT; i++) {
+    const g = idx[i], gx = (g % GRID_W) / (GRID_W - 1), gy = Math.floor(g / GRID_W) / (GRID_H - 1);
+    gridA[i*2] = gx; gridA[i*2+1] = gy;
+    delay[i] = gx * 0.72 + Math.random() * 0.24;   // tear: left edge first
+  }
+
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.BufferAttribute(tgt, 3));
+  geo.setAttribute('aGrid',    new THREE.BufferAttribute(gridA, 2));
+  geo.setAttribute('aScatter', new THREE.BufferAttribute(scat, 3));
+  geo.setAttribute('aDelay',   new THREE.BufferAttribute(delay, 1));
+  geo.setAttribute('aSize',    new THREE.BufferAttribute(sizeA, 1));
+  geo.setAttribute('aSeed',    new THREE.BufferAttribute(seed, 1));
+  geo.setAttribute('aNormal',  new THREE.BufferAttribute(nrm3, 3));
+  geo.setAttribute('aTone',    new THREE.BufferAttribute(tone, 1));
+  geo.setAttribute('aWheel',   new THREE.BufferAttribute(wheelA, 1));
+  geo.boundingSphere = new THREE.Sphere(new THREE.Vector3(0, 1, 2), 40);
+
+  uni = {
+    uJourney: { value: 0 }, uTime: { value: 0 },
+    uRoll: { value: 0 }, uDriveAmt: { value: 0 },
+    uCarLift: { value: 0 }, uCarSlope: { value: 0 }, uExit: { value: 0 }, uExitFade: { value: 0 },
+    uMouse: { value: new THREE.Vector3(99, 99, 99) }, uPix: { value: renderer.getPixelRatio() },
+    uMap: { value: tex },
+    uPlaneC: { value: new THREE.Vector3(0, 1.06, 3.4) },
+    uPlaneR: { value: new THREE.Vector3(1, 0, 0) },
+    uPlaneU: { value: new THREE.Vector3(0, 1, 0) },
+  };
+  points = new THREE.Points(geo, new THREE.ShaderMaterial({
+    vertexShader: VS, fragmentShader: FS, uniforms: uni,
+    transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
+  }));
+  points.frustumCulled = false;
+  scene.add(points);
+
+  // the photograph itself — crisp and real until the moment it tears.
+  // its pixels vanish exactly as their particles launch (same delay law).
+  plane = new THREE.Mesh(new THREE.PlaneGeometry(1, 1),
+    new THREE.ShaderMaterial({
+      uniforms: { uMap: { value: tex }, uJourney: uni.uJourney },
+      vertexShader: `varying vec2 vUv; void main(){ vUv = uv;
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`,
+      fragmentShader: `
+        precision highp float;
+        uniform sampler2D uMap; uniform float uJourney; varying vec2 vUv;
+        void main(){
+          vec3 c = texture2D(uMap, vUv).rgb;
+          float launch = vUv.x * 0.72 + 0.12;                 // matches the particle delay law
+          float a = 1.0 - smoothstep(launch - 0.10, launch + 0.04, uJourney * 1.02);
+          a *= 1.0 - smoothstep(0.38, 0.60, uJourney);        // and the sheet itself is gone
+                                                              // before the camera can ever
+                                                              // catch it edge-on as a card
+          if (a < 0.004) discard;
+          gl_FragColor = vec4(c, a);
+        }`,
+      transparent: true, depthWrite: false,
+    }));
+  scene.add(plane);
+
+  // the desert — where the day can go. geometry holds only (x, z, jitter):
+  // heights are computed in the shader from the WRAPPED z, so the ground can
+  // stream under the car forever without a seam.
+  {
+    const xz = new Float32Array(DESERT_N * 2);
+    const jit = new Float32Array(DESERT_N);
+    const spark = new Float32Array(DESERT_N);
+    const posD = new Float32Array(DESERT_N * 3);   // dummy positions (shader ignores)
+    for (let i = 0; i < DESERT_N; i++) {
+      // dense near the corridor, sparser far out; uniform along the loop
+      const x = (Math.random() < 0.5 ? -1 : 1) * (Math.pow(Math.random(), 1.15) * 27.2);
+      const z = (Math.random() - 0.5) * 66;
+      xz[i*2] = x; xz[i*2+1] = z;
+      jit[i] = Math.random();
+      spark[i] = Math.random() < 0.03 ? 0.5 : 0.0;
+      posD[i*3] = x; posD[i*3+1] = 0; posD[i*3+2] = z;
+    }
+    const g2 = new THREE.BufferGeometry();
+    g2.setAttribute('position', new THREE.BufferAttribute(posD, 3));
+    g2.setAttribute('aXZ',    new THREE.BufferAttribute(xz, 2));
+    g2.setAttribute('aJit',   new THREE.BufferAttribute(jit, 1));
+    g2.setAttribute('aSpark', new THREE.BufferAttribute(spark, 1));
+    g2.boundingSphere = new THREE.Sphere(new THREE.Vector3(0, 0, 0), 45);
+    dUni = { uReveal: { value: 0 }, uDrive: { value: 0 }, uCarZ: { value: 0 }, uCarOn: { value: 0 },
+             uTime: { value: 0 }, uPix: { value: renderer.getPixelRatio() } };
+    desert = new THREE.Points(g2, new THREE.ShaderMaterial({
+      vertexShader: DESERT_VS, fragmentShader: DESERT_FS, uniforms: dUni,
+      transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
+    }));
+    desert.frustumCulled = false;
+    scene.add(desert);
+  }
+  // dust: sand kicked from the tyres while driving. each mote loops through a
+  // short ballistic life — thrown up and back, falling as it fades.
+  {
+    const N = 6400;
+    const st = new Float32Array(N * 3), sd = new Float32Array(N), posZ = new Float32Array(N * 3);
+    const EMIT = [[-0.79, 1.412], [0.79, 1.412], [-0.79, -1.525], [0.79, -1.525]];
+    for (let i = 0; i < N; i++) {
+      const e = EMIT[i % 4];
+      st[i*3] = e[0] + (Math.random() - 0.5) * 0.18;
+      st[i*3+1] = 0.045;
+      st[i*3+2] = e[1] + (Math.random() - 0.5) * 0.14;
+      sd[i] = Math.random();
+      posZ[i*3] = st[i*3]; posZ[i*3+1] = st[i*3+1]; posZ[i*3+2] = st[i*3+2];
+    }
+    const g3 = new THREE.BufferGeometry();
+    g3.setAttribute('position', new THREE.BufferAttribute(posZ, 3));
+    g3.setAttribute('aStart', new THREE.BufferAttribute(st, 3));
+    g3.setAttribute('aSeed', new THREE.BufferAttribute(sd, 1));
+    g3.boundingSphere = new THREE.Sphere(new THREE.Vector3(0, 0.5, 0), 30);
+    window.__dustUni = {
+      uTime: { value: 0 }, uAmt: { value: 0 }, uCarZ: { value: 0 },
+      uLift: { value: 0 }, uPix: { value: renderer.getPixelRatio() },
+    };
+    const dust = new THREE.Points(g3, new THREE.ShaderMaterial({
+      uniforms: window.__dustUni,
+      vertexShader: `
+        uniform float uTime; uniform float uAmt; uniform float uCarZ;
+        uniform float uLift; uniform float uPix;
+        attribute vec3 aStart; attribute float aSeed;
+        varying float vA;
+        void main(){
+          float t  = fract(aSeed + uTime * (0.50 + aSeed * 0.35));
+          float s2 = fract(aSeed * 13.73), s3 = fract(aSeed * 57.19);
+          vec3 p = aStart;
+          p.z += uCarZ;                                            // the plume follows the car out
+          p.z += (2.3 + s2 * 2.6) * (1.0 - pow(1.0 - t, 2.2));     // fast fling, air-drag decel
+          p.x += sign(aStart.x) * t * t * 0.55 + (s3 - 0.5) * t * 1.5;  // outward bias + turbulent fan
+          float up = 0.7 + s2 * 1.3;
+          float yb = uLift + 0.05 + up * t - (up * 0.60 + 0.50) * t * t;
+          p.y = max(yb, uLift + 0.035 + 0.05 * s3) + 0.05 * t * sin(s3 * 40.0 + t * 9.0);
+          vA = pow(1.0 - t, 1.7) * smoothstep(0.0, 0.04, t) * (1.0 + 0.9 * exp(-t * 5.0)) * uAmt;
+          vec4 mv = modelViewMatrix * vec4(p, 1.0);
+          gl_Position = projectionMatrix * mv;
+          gl_PointSize = max((1.0 + s2 * 1.1 + t * (3.4 + s3 * 2.2)) * uPix * (10.0 / -mv.z), 1.6);
+        }`,
+      fragmentShader: `
+        precision highp float; varying float vA;
+        void main(){
+          vec2 q = gl_PointCoord - 0.5;
+          float a = smoothstep(0.5, 0.12, length(q));
+          gl_FragColor = vec4(vec3(0.95, 0.80, 0.58) * 0.95, a * 0.52 * vA);
+        }`,
+      transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
+    }));
+    dust.frustumCulled = false;
+    scene.add(dust);
+  }
+  // the city, far off in the black: a particle skyline behind the desert. it
+  // only exists as lit windows — and it parallaxes when you hold and move.
+  {
+    const PTS = 26000;
+    const pos = new Float32Array(PTS * 3), br = new Float32Array(PTS), wm = new Float32Array(PTS);
+    // deterministic skyline — the exact skyline that was art-directed is the one that ships
+    let _s = 96721; const rnd = () => (_s = (_s * 1103515245 + 12345) & 0x7fffffff, _s / 0x7fffffff);
+    const ss = (a, b, v) => { const t = Math.min(1, Math.max(0, (v - a) / (b - a))); return t * t * (3 - 2 * t); };
+
+    // three districts + a low far tail, in TWO depth rows (front bright, back
+    // dim + blue-shifted haze) with real black gaps between districts.
+    // form: 0 slab · 1 setback at 2/3 h · 2 tapered spire+antenna · 3 arc plan
+    const tw = [];
+    const mk = (z, front, h, w, d, form, led, crown) => tw.push({
+      x: (front ? 41.5 + rnd() * 5.5 : 53.5 + rnd() * 7),
+      z, w, d, h, form, led, crown,
+      row: front ? 1.0 : 0.5,
+      haze: front ? 0 : -(0.15 + rnd() * 0.2),      // wm < 0 extrapolates cooler = distance haze
+    });
+    // marina  (z -38..-22)
+    mk(-36.5, 1, 4.6, 1.5, 1.2, 0, 0, 1); mk(-34.0, 1, 6.9, 1.7, 1.4, 0, 1, 1);
+    mk(-31.6, 1, 5.8, 1.3, 1.1, 3, 0, 0); mk(-29.4, 1, 3.4, 1.2, 1.0, 0, 0, 1);
+    mk(-27.0, 1, 6.4, 1.5, 1.2, 1, 0, 0); mk(-24.4, 1, 4.1, 1.3, 1.1, 0, 0, 1);
+    mk(-22.6, 1, 2.5, 2.8, 1.6, 0, 0, 0);
+    mk(-35.2, 0, 5.2, 2.0, 1.6, 0, 0, 0); mk(-31.9, 0, 3.6, 1.8, 1.5, 0, 0, 0);
+    mk(-28.2, 0, 4.4, 1.9, 1.5, 0, 0, 1); mk(-24.9, 0, 2.8, 2.4, 1.8, 0, 0, 0);
+    // downtown (z -13..+8) — the spire district
+    mk(-12.2, 1, 3.2, 1.4, 1.1, 0, 0, 1); mk(-9.9, 1, 5.1, 1.5, 1.2, 1, 0, 0);
+    mk(-6.6, 1, 8.4, 1.9, 1.9, 2, 0, 0);            // THE spire (drag-view frame-safe)
+    mk(-3.4, 1, 6.2, 1.5, 1.2, 0, 1, 1); mk(-1.2, 1, 4.7, 1.3, 1.1, 0, 0, 0);
+    mk(1.4, 1, 5.5, 1.4, 1.2, 1, 0, 1);  mk(3.8, 1, 3.0, 1.2, 1.0, 0, 0, 0);
+    mk(6.4, 1, 4.2, 1.4, 1.1, 0, 0, 1);  mk(-8.4, 1, 1.6, 3.6, 1.8, 0, 0, 0);
+    mk(-11.0, 0, 4.0, 1.9, 1.6, 0, 0, 0); mk(-7.3, 0, 5.6, 2.0, 1.6, 0, 0, 1);
+    mk(-3.9, 0, 3.1, 1.8, 1.4, 0, 0, 0);  mk(0.6, 0, 4.6, 2.0, 1.6, 0, 0, 0);
+    mk(4.9, 0, 2.6, 2.2, 1.7, 0, 0, 0);
+    // bay (z 15..30)
+    mk(16.2, 1, 3.8, 1.4, 1.1, 0, 0, 1); mk(18.8, 1, 2.7, 1.3, 1.0, 0, 0, 0);
+    mk(21.6, 1, 4.5, 1.5, 1.2, 1, 0, 0); mk(24.6, 1, 3.3, 1.3, 1.1, 0, 0, 1);
+    mk(27.6, 1, 2.2, 2.2, 1.5, 0, 0, 0);
+    mk(17.8, 0, 3.0, 1.8, 1.5, 0, 0, 0); mk(22.4, 0, 3.9, 1.9, 1.5, 0, 0, 0);
+    mk(26.8, 0, 2.4, 2.0, 1.6, 0, 0, 0);
+    // far tail (z 33..45)
+    mk(33.5, 0, 1.9, 2.2, 1.6, 0, 0, 0); mk(37.0, 0, 1.4, 2.6, 1.8, 0, 0, 0);
+    mk(41.0, 0, 1.7, 2.0, 1.5, 0, 0, 0); mk(44.5, 0, 1.0, 2.4, 1.7, 0, 0, 0);
+    const TOWERS = tw.length;
+
+    let areaSum = 0; for (const t of tw) { t.area = (t.w + t.d) * t.h * (t.form === 2 ? 1.35 : 1); areaSum += t.area; }
+    const GLOW = 3000, SPRAWL = 2600, DECOR = 400;
+    const WIN = PTS - GLOW - SPRAWL - DECOR;
+    const FLOOR = 0.16, PITCH = 0.13;               // floor rows are what make it architecture
+    let ci = 0;
+    const put = (x, y, z, b, w) => { if (ci < PTS) { pos[ci*3] = x; pos[ci*3+1] = y; pos[ci*3+2] = z; br[ci] = b; wm[ci] = w; ci++; } };
+
+    // windows: floor-quantized rows, jittered columns, per-floor lit blocks
+    for (let ti = 0; ti < TOWERS; ti++) {
+      const t = tw[ti];
+      const n = Math.max(24, Math.round(WIN * t.area / areaSum));
+      const nF = Math.max(2, Math.round(t.h / FLOOR));
+      for (let k = 0; k < n; k++) {
+        const f = (rnd() * nF) | 0;
+        const y0 = (f + 0.5) * FLOOR;
+        const h1 = Math.abs(Math.sin(ti * 37.7 + f * 13.13));   // offices at night:
+        const litP = h1 < 0.16 ? 0.05 : 0.22 + 0.68 * Math.abs(Math.sin(ti * 91.3 + f * 7.77));
+        if (rnd() > litP) continue;                             // some floors dark, some busy
+        let w2 = t.w, d2 = t.d;
+        if (t.form === 1 && y0 > t.h * 0.66) { w2 *= 0.62; d2 *= 0.62; }
+        if (t.form === 2) { const sc = 1.0 - 0.78 * (y0 / t.h); w2 *= sc; d2 *= sc; }
+        const face = rnd();
+        let x, z, fMul = 1;
+        if (face < 0.62) {                                      // camera-side face
+          const cols = Math.max(2, Math.round(w2 / PITCH));
+          const c = (rnd() * cols) | 0;
+          z = t.z - w2 / 2 + (c + 0.5) * (w2 / cols) + (rnd() - 0.5) * 0.02;
+          x = t.x - d2 / 2;
+          if (t.form === 3) {                                   // arc plan bows toward camera
+            const a = ((z - t.z) / (t.w / 2)) * 0.85;
+            x += (Math.cos(a) - 1) * 1.6; fMul = 0.72 + 0.28 * Math.cos(a);
+          }
+        } else if (face < 0.90) {                               // side faces
+          const cols = Math.max(2, Math.round(d2 / PITCH));
+          const c = (rnd() * cols) | 0;
+          x = t.x - d2 / 2 + (c + 0.5) * (d2 / cols) + (rnd() - 0.5) * 0.02;
+          z = t.z + (rnd() < 0.5 ? -1 : 1) * w2 / 2;
+          fMul = 0.8;
+        } else {                                                // interior spill
+          x = t.x + (rnd() - 0.5) * d2 * 0.7; z = t.z + (rnd() - 0.5) * w2 * 0.7; fMul = 0.35;
+        }
+        const y = y0 + (rnd() - 0.5) * 0.018;
+        let b = (0.30 + 0.70 * rnd()) * t.row * fMul
+              * (0.42 + 0.58 * ss(0.05, 0.85, y0));             // haze eats the bases
+        if (t.crown && f >= nF - 2) b *= 1.7;                   // lit parapet
+        const w = (rnd() < (0.10 + 0.30 * Math.exp(-y0 / 1.1)) ? 0.85 : 0.0) + t.haze;
+        put(x, y, z, Math.min(b, 1.25), w);
+      }
+    }
+    // decor: LED corner columns, spire antenna+crown, aviation lights
+    for (let ti = 0; ti < TOWERS; ti++) {
+      const t = tw[ti];
+      if (t.led) for (let e = 0; e < 2; e++) {
+        const z = t.z + (e ? -1 : 1) * t.w / 2, x = t.x - t.d / 2;
+        for (let y = 0.25; y < t.h - 0.05; y += FLOOR) put(x, y, z, 0.9, 0.0);
+      }
+      if (t.form === 2) {
+        for (let a = 0; a < 4; a++) put(t.x, t.h + 0.22 + a * 0.26, t.z, 0.55 - a * 0.08, 0.0);
+        for (let c = 0; c < 26; c++) {
+          const yy = t.h * (0.90 + rnd() * 0.10), sc = 1.0 - 0.78 * (yy / t.h);
+          put(t.x + (rnd() - 0.5) * t.d * sc, yy, t.z + (rnd() - 0.5) * t.w * sc, 0.85, 0.0);
+        }
+      }
+    }
+    const tall = [...tw].sort((a, b) => b.h - a.h).slice(0, 5);
+    for (const t of tall) put(t.x, t.h + 0.06, t.z, 0.65, 4.0);  // aviation: wm 4 extrapolates
+                                                                 // mix(cool,warm,·) → clamps to warm-red
+    // sky glow — the city leaks light into the black above it
+    const dz = [-29, -3, 22];
+    for (let k = 0; k < GLOW; k++) {
+      const c = dz[(rnd() * 3) | 0] + (rnd() - 0.5) * 22;
+      const y = 0.5 + Math.pow(rnd(), 3.0) * 5.0;
+      put(47 + rnd() * 15, y, c, 0.12 + 0.18 * rnd() * rnd(), 0.55);
+    }
+    // sprawl — sodium low-rise carpet between and past the districts
+    for (let k = 0; k < SPRAWL; k++) {
+      const z = -46 + rnd() * 92;
+      const nearD = Math.max(Math.exp(-Math.abs(z + 29) / 8), Math.exp(-Math.abs(z + 3) / 9), Math.exp(-Math.abs(z - 22) / 8));
+      if (rnd() > 0.22 + 0.78 * nearD) continue;
+      put(44 + rnd() * 17, Math.pow(rnd(), 2.6) * 0.8, z, 0.03 + 0.10 * rnd() * rnd() * (0.4 + 0.6 * nearD), 0.8);
+    }
+    // unfilled tail of the buffers stays (0,0,0)/br 0 — additive, contributes nothing
+    const g4 = new THREE.BufferGeometry();
+    g4.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+    g4.setAttribute('aBr', new THREE.BufferAttribute(br, 1));
+    g4.setAttribute('aWm', new THREE.BufferAttribute(wm, 1));
+    g4.boundingSphere = new THREE.Sphere(new THREE.Vector3(48, 5, 0), 70);
+    window.__cityUni = { uReveal: { value: 0 }, uPix: { value: renderer.getPixelRatio() } };
+    const city = new THREE.Points(g4, new THREE.ShaderMaterial({
+      uniforms: window.__cityUni,
+      vertexShader: `
+        uniform float uReveal; uniform float uPix;
+        attribute float aBr; attribute float aWm;
+        varying float vB; varying float vW;
+        void main(){
+          vB = aBr * uReveal; vW = aWm;
+          vec4 mv = modelViewMatrix * vec4(position, 1.0);
+          gl_Position = projectionMatrix * mv;
+          gl_PointSize = max(1.0 * uPix * (9.0 / -mv.z), 1.1);
+        }`,
+      fragmentShader: `
+        precision highp float; varying float vB; varying float vW;
+        void main(){
+          vec2 q = gl_PointCoord - 0.5;
+          float a = smoothstep(0.5, 0.15, length(q));
+          vec3 cool = vec3(0.62, 0.72, 0.92), warm = vec3(1.0, 0.80, 0.55);
+          gl_FragColor = vec4(mix(cool, warm, vW) * vB, a * 0.5);
+        }`,
+      transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
+    }));
+    city.frustumCulled = false;
+    scene.add(city);
+  }
+  window.__geo = points.geometry; window.__pts = points; window.__r = renderer; window.__cam = camera; window.__uni = uni;
+  __status.push('scene-built');
+} catch (err) { __status.push('THREW: ' + err.message + ' @ ' + (err.stack || '').split('\n')[1]); }
+
+/* ---------- input: read it, never obey it ---------- */
+let sTarget = 0, sEased = 0;
+const ndc = new THREE.Vector2(9, 9);
+const ray = new THREE.Raycaster();
+const mouseW = new THREE.Vector3(99, 99, 99);
+
+const beats = [...document.querySelectorAll('.beat')];
+const read = () => {
+  const last = beats[beats.length - 1];
+  const span = last.offsetTop + last.offsetHeight - innerHeight;
+  sTarget = Math.max(0, Math.min(1, scrollY / Math.max(1, span)));
+};
+let pinned = false;   // dev: __day pins the journey; late scroll events must not yank it
+addEventListener('scroll', () => { if (!pinned) read(); wake(); }, { passive: true });
+
+// hold and move: the map is yours. drag orbits the scene; it stays where you
+// leave it. while dragging, the particle-repulsion hand switches off so the
+// scene doesn't fight itself.
+let dragging = false, px = 0, py = 0, dragAz = 0, dragEl = 0, eDragAz = 0, eDragEl = 0;
+addEventListener('pointerdown', (e) => { dragging = true; px = e.clientX; py = e.clientY; });
+addEventListener('pointerup',   () => { dragging = false; });
+addEventListener('pointermove', (e) => {
+  if (dragging) {
+    dragAz -= (e.clientX - px) * 0.0032;
+    dragEl += (e.clientY - py) * 0.0016;
+    dragAz = Math.max(-0.9, Math.min(0.9, dragAz));
+    dragEl = Math.max(-0.10, Math.min(0.24, dragEl));
+    px = e.clientX; py = e.clientY;
+  }
+  ndc.set((e.clientX / innerWidth) * 2 - 1, -(e.clientY / innerHeight) * 2 + 1);
+  wake();
+}, { passive: true });
+
+function fitPlane() {
+  // the photograph fills the hero frame exactly, whatever the viewport
+  const B = BEATS[0];
+  const camPos = new THREE.Vector3(Math.sin(B.az) * Math.cos(B.el) * B.dist,
+    Math.sin(B.el) * B.dist + 0.9, Math.cos(B.az) * Math.cos(B.el) * B.dist);
+  const C = uni ? uni.uPlaneC.value : new THREE.Vector3(0, 1.06, 3.4);
+  const D = camPos.distanceTo(C);
+  const H = 2 * D * Math.tan(THREE.MathUtils.degToRad(18)) * 1.10;
+  const W = H * (innerWidth / innerHeight) * 1.02;
+  if (uni) { uni.uPlaneR.value.set(W, 0, 0); uni.uPlaneU.value.set(0, H, 0); }
+  if (plane) { plane.position.copy(C); plane.scale.set(W, H, 1); }
+}
+addEventListener('resize', () => {
+  camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth, innerHeight);
+  if (!pinned) read();   // a resize must never yank a pinned journey either
+  fitPlane(); wake();
+});
+read(); fitPlane();
+
+const lerpN = (a, b, t) => a + (b - a) * t;
+
+/* THE LOOP — the car drives while the desert beat holds. it does not arrive
+   and it does not leave the loop: wheels turn, ground streams, no start and no
+   end. on the final scroll it exits the only way it can — by driving away. */
+let driveDist = 0, driveAmt = 0, carLift = 0, carSlope = 0;
+const DRIVE_SPEED = 5.2;              // world-units per second
+const WHEEL_R = 0.48;                 // wheel radius after scale (22-inch stance)
+const LL = 66;
+
+// EXACTLY the shader's duneH — the car's suspension reads the same ground
+const smst = (a, b, v) => { const t = Math.min(1, Math.max(0, (v - a) / (b - a))); return t * t * (3 - 2 * t); };
+function duneJS(x, z) {   // EXACT mirror of the shader — the suspension reads this
+  const kk = Math.PI * 2 / LL, zk = z * kk;
+  const skew = zk + 0.30 * Math.sin(zk);
+  const A = 0.62 + 0.30 * smst(3.0, 18.0, Math.abs(x));
+  const h = Math.sin(skew*2 + 1.7 + 0.30*Math.sin(x*0.13)) * 1.02
+          + 0.42*Math.sin(zk + 0.5 + 0.22*Math.sin(x*0.17 + 1.0))
+          + 0.12*Math.sin(zk*5.0 + x*0.30 + 0.7);
+  return h * A - 0.02;
+}
+// terrain height under a WORLD point: the grain rendering there carries height
+// from its base coordinate z - uDrive
+const terrainAt = (xW, zWorld) => duneJS(xW, ((zWorld - driveDist) % LL + LL * 1.5) % LL - LL * 0.5);
+
+function update(dt, ms) {
+  sEased += (sTarget - sEased) * k(dt, TAU_SCROLL);
+  const f = sEased * (BEATS.length - 1);
+  const i0 = Math.min(BEATS.length - 2, Math.floor(f));
+  const i1 = i0 + 1, m = Math.min(1, Math.max(0, f - i0));
+  const e = m * m * (3 - 2 * m);
+  const A = BEATS[i0], B = BEATS[i1];
+
+  eDragAz += (dragAz - eDragAz) * k(dt, 0.16);
+  eDragEl += (dragEl - eDragEl) * k(dt, 0.16);
+  const az = lerpN(A.az, B.az, e) + eDragAz, el = Math.max(0.02, lerpN(A.el, B.el, e) + eDragEl);
+  const dist = lerpN(A.dist, B.dist, e), cx = lerpN(A.x, B.x, e);
+  camera.position.set(cx + Math.sin(az) * Math.cos(el) * dist,
+    Math.sin(el) * dist + 0.9, Math.cos(az) * Math.cos(el) * dist);
+  camera.lookAt(cx, 0.8, 0);
+
+  const jou = lerpN(A.jou, B.jou, e), exv = lerpN(A.exit, B.exit, e);
+  if (uni) {
+    uni.uJourney.value = jou;
+    uni.uTime.value = ms * 0.001;
+    if (!dragging) {
+      ray.setFromCamera(ndc, camera);
+      const o = ray.ray.origin, d = ray.ray.direction;
+      const t = Math.max(0, new THREE.Vector3(cx, 0.8, 0).sub(o).dot(d));
+      mouseW.copy(o).addScaledVector(d, t);
+      uni.uMouse.value.lerp(mouseW, k(dt, TAU_CURSOR));
+    }
+  }
+  const reveal = Math.max(0, Math.min(1, (jou - 0.55) / 0.45));
+  // the exit, SLOW: the car pulls away like a departure, not a launch — cubic
+  // ease-in, so it barely creeps at first and is simply gone by the end.
+  // the desert never dissolves: the day goes on without you watching it.
+  // the exit: slow, believable speed — and the DARK does the disappearing.
+  // distance alone can never guarantee gone (the user can orbit and follow);
+  // the fade can. it drives away and the night closes over it.
+  const exitDist = exv * exv * 14.0 + exv * 4.0;
+  const exitFade = smst(0.35, 0.92, exv);
+  driveAmt = reveal * (1 - exv * 0.7) * (1 - exitFade);
+  driveDist += dt * DRIVE_SPEED * reveal;
+
+  // suspension: FOUR wheels, sampled where the tyres actually are (±0.79
+  // lateral), on the ground the car is actually crossing — including on the way
+  // out (axles offset by exitDist). per axle the HIGHER wheel wins: a tyre can
+  // ride a crest, it cannot sink. tracking is tight — the old heavy damping
+  // lagged the streaming dunes, cutting into rises and floating over falls.
+  const zF = -1.525 - exitDist, zR = 1.412 - exitDist;
+  const hF = Math.max(terrainAt(-0.79, zF), terrainAt(0.79, zF));
+  const hR = Math.max(terrainAt(-0.79, zR), terrainAt(0.79, zR));
+  const liftT = (hF + hR) * 0.5, slopeT = (hR - hF) / 2.937;
+  carLift += (liftT - carLift) * k(dt, 0.055);
+  carSlope += (slopeT - carSlope) * k(dt, 0.055);
+
+  if (uni) {
+    uni.uRoll.value = (driveDist + exitDist) / WHEEL_R;
+    uni.uDriveAmt.value = driveAmt;
+    uni.uCarLift.value = (carLift - 0.10) * reveal;   // tyres bite into the glow, not hover on math
+    uni.uCarSlope.value = carSlope * reveal;
+    uni.uExit.value = exitDist;
+    uni.uExitFade.value = exitFade;
+  }
+  if (dUni) {
+    dUni.uReveal.value = reveal;
+    dUni.uDrive.value = driveDist;
+    dUni.uTime.value = ms * 0.001;
+    dUni.uCarZ.value = -exitDist;
+    dUni.uCarOn.value = reveal * (1 - exitFade) * Math.max(0, 1 - exitDist / 16);
+  }
+  if (window.__dustUni) {
+    __dustUni.uTime.value = ms * 0.001;
+    __dustUni.uAmt.value = driveAmt;   // fades with the car
+    __dustUni.uCarZ.value = -exitDist;
+    __dustUni.uLift.value = (carLift - 0.055) * reveal;
+  }
+  if (window.__cityUni) __cityUni.uReveal.value = reveal;
+
+  // the copy is welded to the CANVAS state, not to raw scroll — on a fast flick
+  // the scene eases behind the scrollbar, and text must never sit over the
+  // wrong world (his recording caught beat-2 copy over the beat-0 photograph).
+  for (let i = 0; i < beats.length; i++) {
+    const near = Math.max(0, 1 - Math.abs(f - i) * 1.7);
+    const e2 = near * near * (3 - 2 * near);
+    beats[i].firstElementChild.style.opacity = e2.toFixed(3);
+  }
+  if (plane) plane.visible = jou < 0.62;
+}
+
+/* render-on-demand + settling loop (this preview pane never fires rAF) */
+let last = 0, idleFrames = 0, running = false;
+function renderNow(ms) {
+  const dt = last ? Math.min((ms - last) / 1000, 0.05) : 0.016;
+  last = ms;
+  update(dt, ms);
+  renderer.render(scene, camera);
+}
+function loop(ms) {
+  renderNow(ms);
+  // never idle while the car is driving — the loop IS the content there
+  const settled = Math.abs(sTarget - sEased) < 1e-4 && (dUni ? dUni.uReveal.value : 0) < 0.01;
+  idleFrames = settled ? idleFrames + 1 : 0;
+  if (idleFrames < 240) requestAnimationFrame(loop); else running = false;
+}
+function wake() { if (!running) { running = true; idleFrames = 0; requestAnimationFrame(loop); } }
+wake();
+
+window.__day = v => { pinned = true; sTarget = sEased = Math.max(0, Math.min(1, v)); renderNow(performance.now() + 16); };
+window.__cursor = (x, y) => { ndc.set(x * 2 - 1, -(y * 2 - 1)); renderNow(performance.now() + 16); renderNow(performance.now() + 500); };
+window.__orbit = (a, e2) => { dragAz = eDragAz = a; dragEl = eDragEl = e2; renderNow(performance.now() + 16); };
+window.__tick = (n) => { let t = last || performance.now();
+  for (let i = 0; i < n; i++) renderNow(t += 33.3); return 'advanced ' + n + ' frames'; };
+</script>
+</body>
+</html>

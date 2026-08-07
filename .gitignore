@@ -1,0 +1,6 @@
+node_modules/
+models/
+_archive/
+.DS_Store
+*.ppm
+tools/harness/*-wip.mjs
