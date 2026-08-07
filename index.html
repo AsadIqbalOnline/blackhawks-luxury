@@ -659,7 +659,7 @@ try {
   for (let i = 0; i < COUNT; i++) {
     const g = idx[i], gx = (g % GRID_W) / (GRID_W - 1), gy = Math.floor(g / GRID_W) / (GRID_H - 1);
     gridA[i*2] = gx; gridA[i*2+1] = gy;
-    delay[i] = gx * 0.72 + Math.random() * 0.24;   // tear: left edge first
+    delay[i] = gy * 0.72 + Math.random() * 0.24;   // tear: bottom edge first, rising
   }
 
   const geo = new THREE.BufferGeometry();
@@ -703,8 +703,10 @@ try {
         uniform sampler2D uMap; uniform float uJourney; varying vec2 vUv;
         void main(){
           vec3 c = texture2D(uMap, vUv).rgb;
-          float launch = vUv.x * 0.72 + 0.12;                 // matches the particle delay law
-          float a = 1.0 - smoothstep(launch - 0.10, launch + 0.04, uJourney * 1.02);
+          float launch = vUv.y * 0.72 + 0.12;                 // matches the particle delay law
+          // the pixels LAG their particles: the motes lift off a photograph
+          // that is still glowing, and only then does that region go dark
+          float a = 1.0 - smoothstep(launch + 0.035, launch + 0.12, uJourney * 1.02);
           a *= 1.0 - smoothstep(0.38, 0.60, uJourney);        // and the sheet itself is gone
                                                               // before the camera can ever
                                                               // catch it edge-on as a card
@@ -1002,25 +1004,43 @@ addEventListener('pointermove', (e) => {
   wake();
 }, { passive: true });
 
+/* the photograph is STICKY: it billboards to the camera every frame (no
+   perspective rotation while the world turns underneath) and sits LOW in the
+   frame — the copy owns the black above it. fitPlane only computes the sizes;
+   update() glues the sheet to the camera. */
+let planeW = 1, planeH = 1, planeD = 6, planeShift = 0;
 function fitPlane() {
-  // the photograph keeps its OWN aspect — contain, never stretch. the plate is
-  // a studio float on true black, so the letterbox is invisible; on portrait
-  // phones this is what keeps the whole car (and chauffeur) in frame.
   const B = BEATS[0];
   const camPos = new THREE.Vector3(Math.sin(B.az) * Math.cos(B.el) * B.dist,
     Math.sin(B.el) * B.dist + 0.9, Math.cos(B.az) * Math.cos(B.el) * B.dist);
-  const C = uni ? uni.uPlaneC.value : new THREE.Vector3(0, 1.06, 3.4);
-  const D = camPos.distanceTo(C);
+  planeD = camPos.distanceTo(new THREE.Vector3(0, 1.06, 3.4));
   const PA = 16 / 9;                       // hero plate aspect
-  const Hv = 2 * D * Math.tan(THREE.MathUtils.degToRad(18));
+  const Hv = 2 * planeD * Math.tan(THREE.MathUtils.degToRad(18));
   const Wv = Hv * (innerWidth / innerHeight);
-  // portrait: pure contain — the plate composes the car to its full width, so
-  // ANY overscan beheads a bumper. the letterbox is black-on-black, invisible.
-  const over = innerWidth < innerHeight ? 1.0 : 1.10;
-  const W = Math.min(Wv * over, Hv * 1.10 * PA);
+  // FULL-BLEED WIDTH on every screen — the plate always spans edge to edge
+  // (capped only on extreme ultrawide), keeping its own 16:9 so nothing
+  // stretches and the whole car survives.
+  const W = Math.min(Wv, Hv * 1.10 * PA);
   const H = W / PA;
-  if (uni) { uni.uPlaneR.value.set(W, 0, 0); uni.uPlaneU.value.set(0, H, 0); }
-  if (plane) { plane.position.copy(C); plane.scale.set(W, H, 1); }
+  planeW = W; planeH = H;
+  // the 20%-down, clamped so the plate's foot (and the wheels) never leaves
+  // the frame — portrait gets the full drop, 16:9 gets what fits (~6%).
+  planeShift = Math.max(0, Math.min(0.20, 0.56 - H / (2 * Hv))) * Hv;
+}
+const _bR = new THREE.Vector3(), _bU = new THREE.Vector3(),
+      _bF = new THREE.Vector3(), _bC = new THREE.Vector3();
+function stickPlane() {
+  const q = camera.quaternion;
+  _bR.set(1, 0, 0).applyQuaternion(q);
+  _bU.set(0, 1, 0).applyQuaternion(q);
+  _bF.set(0, 0, -1).applyQuaternion(q);
+  _bC.copy(camera.position).addScaledVector(_bF, planeD).addScaledVector(_bU, -planeShift);
+  if (uni) {
+    uni.uPlaneC.value.copy(_bC);
+    uni.uPlaneR.value.copy(_bR).multiplyScalar(planeW);
+    uni.uPlaneU.value.copy(_bU).multiplyScalar(planeH);
+  }
+  if (plane) { plane.position.copy(_bC); plane.quaternion.copy(q); plane.scale.set(planeW, planeH, 1); }
 }
 addEventListener('resize', () => {
   camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix();
@@ -1085,6 +1105,7 @@ function update(dt, ms) {
   camera.position.set(cx + Math.sin(az) * Math.cos(el) * dist,
     Math.sin(el) * dist + 0.9, Math.cos(az) * Math.cos(el) * dist);
   camera.lookAt(cx, 0.8, 0);
+  stickPlane();   // the photograph rides the camera — sticky, never rotating
 
   if (uni) {
     uni.uJourney.value = jou;
