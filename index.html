@@ -664,7 +664,7 @@ try {
   for (let i = 0; i < COUNT; i++) {
     const g = idx[i], gx = (g % GRID_W) / (GRID_W - 1), gy = Math.floor(g / GRID_W) / (GRID_H - 1);
     gridA[i*2] = gx; gridA[i*2+1] = gy;
-    delay[i] = gy * 0.72 + Math.random() * 0.24;   // tear: bottom edge first, rising
+    delay[i] = (1 - gy) * 0.72 + Math.random() * 0.24;   // the dark descends: top row tears first
   }
 
   const geo = new THREE.BufferGeometry();
@@ -708,7 +708,7 @@ try {
         uniform sampler2D uMap; uniform float uJourney; varying vec2 vUv;
         void main(){
           vec3 c = texture2D(uMap, vUv).rgb;
-          float launch = vUv.y * 0.72 + 0.12;                 // matches the particle delay law
+          float launch = (1.0 - vUv.y) * 0.72 + 0.12;         // matches the particle delay law
           // the pixels LAG their particles: the motes lift off a photograph
           // that is still glowing, and only then does that region go dark
           float a = 1.0 - smoothstep(launch + 0.035, launch + 0.12, uJourney * 1.02);
@@ -1032,10 +1032,13 @@ function fitPlane() {
     // edges off-screen (no black sides), and the car is BOTTOM-ANCHORED:
     // its wheels rest at ~93% of the viewport, road crops away below, the
     // dark treeline above takes the copy. car sits at 0.18–0.80 of the plate.
-    const W = Math.min(Wv * 1.06, Hv * 1.45 * PA);
+    const W = Math.min(Wv * 1.06, Hv * 1.30 * PA);
     planeW = W; planeH = W / PA;
     const Hp = planeH / Hv;
-    planeShift = Math.max(0, 0.43 - 0.30 * Hp) * Hv;
+    // wheels at the very foot of the frame, road cropping away below — but the
+    // ROOF must stay in view: on very wide screens the roof-guard term wins
+    // and the wheels give up a sliver instead. car sits at 0.06–0.82 of plate.
+    planeShift = Math.max(0.50 - 0.30 * Hp, 0.44 * Hp - 0.45) * Hv;
   }
 }
 const _bR = new THREE.Vector3(), _bU = new THREE.Vector3(),
