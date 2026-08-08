@@ -155,6 +155,41 @@ body.stage #top{position:fixed}
 @keyframes deckOut{
   from{transform:translateY(0) rotate(0)}
   to{transform:translateY(-30%) rotate(-6deg) scale(.97);opacity:0}}
+/* ---------- page variants so the three stages are NOT the same ----------
+   .flip (About): mirrored — media LEFT bleeding off the left edge, info RIGHT.
+   .full (Services): the photo fills the WHOLE stage behind the info. */
+body.flip #show{grid-template-columns:1fr minmax(330px,36%);
+  padding:0 var(--safe) 0 0}
+body.flip .info{order:2}
+body.flip .media{order:1}
+body.flip .slide{left:-5vw;right:0;transform-origin:30% 100%}
+body.flip .slide .num{right:34px}
+body.flip .slide.in{animation-name:deckInL}
+body.flip .slide.out{animation-name:deckOutL}
+@keyframes deckInL{
+  from{transform:translateY(84%) rotate(-8deg) scale(.985)}
+  to{transform:translateY(0) rotate(0) scale(1)}}
+@keyframes deckOutL{
+  from{transform:translateY(0) rotate(0)}
+  to{transform:translateY(-30%) rotate(6deg) scale(.97);opacity:0}}
+body.full .media{position:fixed;inset:0;height:auto;perspective:none;z-index:1}
+body.full .slide{left:0;right:0;border-radius:0;border:none;box-shadow:none;
+  transform-origin:50% 100%}
+body.full .slide .bg::after{background:linear-gradient(90deg,
+  rgba(4,5,7,.92) 0%, rgba(4,5,7,.55) 42%, rgba(4,5,7,.15) 70%, rgba(4,5,7,.35) 100%)}
+body.full .slide .num{right:34px}
+body.full .info{position:relative;z-index:3}
+body.full #show{grid-template-columns:minmax(340px,44%) 1fr}
+@media (max-width:760px){
+  body.flip #show{grid-template-columns:1fr;padding:calc(var(--safe) + 84px) var(--safe) 72px}
+  body.flip .info{order:1}
+  body.flip .media{order:2}
+  body.flip .slide{left:0;right:0}
+  body.full #show{grid-template-columns:1fr}
+  body.full .slide .bg::after{background:linear-gradient(12deg,
+    rgba(4,5,7,.94) 20%, rgba(4,5,7,.55) 55%, rgba(4,5,7,.25) 85%)}
+}
+
 .hud{position:fixed;left:var(--safe);bottom:24px;z-index:4;
   display:flex;gap:16px;align-items:center}
 .hud .dots{display:flex;gap:8px}
