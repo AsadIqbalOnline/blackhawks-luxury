@@ -45,8 +45,11 @@
     text-align:right;line-height:1.8}
 
   #track{position:relative;z-index:2}
+  /* two beats only: photograph, then desert+exit. the car drives out across
+     the second half of the journey and the company card's entry lands exactly
+     at exit-complete (span end == #next touching the viewport bottom) — no
+     empty third page in between. */
   .beat{height:140vh;position:relative}
-  .beat:nth-child(3){height:150vh}
   .copy{position:sticky;top:14vh;margin-left:var(--safe);
     width:var(--measure-h);max-width:calc(100vw - var(--safe)*2)}
   /* hero copy lives in the photograph's dead black — upper left, above the
@@ -96,11 +99,10 @@
   @media (max-width:760px){
     .d1{font-size:26px;line-height:32px}
     .b1{font-size:16px;line-height:26px;margin-top:16px}
-    /* full-frame hero photo behind — copy sits high, over the dark treeline */
-    .copy{top:60vh}
+    /* desert copy rides lower on phones (hero copy has its own rule above) */
+    .copy{top:66vh}
     /* tighter track: no dead scroll between the desert and the card */
     .beat{height:110vh}
-    .beat:nth-child(3){height:118vh}
     /* the card must land in ONE phone frame, desert visible around it */
     .glass{padding:30px 24px;border-radius:18px}
     .glass .d1{font-size:24px;line-height:30px;margin:8px 0 4px}
@@ -170,13 +172,6 @@
     <div class="copy">
       <h2 class="d1">The day can go anywhere.</h2>
       <p class="b1">Dunes at six, dinner at nine. Same car, same chauffeur &mdash; and one call to you if anything changes. Nothing changes.</p>
-    </div>
-  </section>
-
-  <section class="beat">
-    <div class="copy">
-      <h2 class="d1">Your operator hears nothing all day.</h2>
-      <p class="b1">Which is the only review that matters.</p>
     </div>
   </section>
 
