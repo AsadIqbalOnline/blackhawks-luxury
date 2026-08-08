@@ -45,11 +45,13 @@
     text-align:right;line-height:1.8}
 
   #track{position:relative;z-index:2}
-  /* two beats only: photograph, then desert+exit. the car drives out across
-     the second half of the journey and the company card's entry lands exactly
-     at exit-complete (span end == #next touching the viewport bottom) — no
-     empty third page in between. */
+  /* two beats only: photograph, then desert+exit. the journey is linear over
+     the span, so PAGE and WORLD stay in phase only if section 1 is exactly
+     half the span: s2 = s1 + 100vh. then the tear completes precisely as
+     section 1's last pixel (and its title) leaves, the exit rides section 2,
+     and the card's entry lands at exit-complete (span end == #next at fold). */
   .beat{height:140vh;position:relative}
+  .beat:nth-child(2){height:240vh}
   .copy{position:sticky;top:14vh;margin-left:var(--safe);
     width:var(--measure-h);max-width:calc(100vw - var(--safe)*2)}
   /* hero copy lives in the photograph's dead black — upper left, above the
@@ -100,8 +102,10 @@
     .b1{font-size:16px;line-height:26px;margin-top:16px}
     /* desert copy rides lower on phones (hero copy has its own rule above) */
     .copy{top:66vh}
-    /* tighter track: no dead scroll between the desert and the card */
+    /* tighter track: no dead scroll between the desert and the card.
+       phase law holds here too: s2 = s1 + 100vh */
     .beat{height:110vh}
+    .beat:nth-child(2){height:210vh}
     /* the card must land in ONE phone frame, desert visible around it */
     .glass{padding:30px 24px;border-radius:18px}
     .glass .d1{font-size:24px;line-height:30px;margin:8px 0 4px}
@@ -1327,7 +1331,9 @@ function update(dt, ms) {
   // distance alone can never guarantee gone (the user can orbit and follow);
   // the fade can. it drives away and the night closes over it.
   const exitDist = exv * exv * 14.0 + exv * 4.0;
-  const exitFade = smst(0.35, 0.92, exv);
+  // fade window ends near the very top of the exit so the car is swallowed
+  // just before the card reaches the fold — no long empty-desert pause
+  const exitFade = smst(0.45, 0.97, exv);
   driveAmt = reveal * (1 - exv * 0.7) * (1 - exitFade);
   driveDist += dt * DRIVE_SPEED * reveal;
 
