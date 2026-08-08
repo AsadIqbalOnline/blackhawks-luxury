@@ -92,8 +92,12 @@
   .actions .wa:hover{filter:brightness(1.07);transform:translateY(-1px);
     box-shadow:inset 0 1px 0 rgba(255,255,255,.5), 0 14px 34px rgba(212,175,55,.30)}
   .actions .wa svg{width:22px;height:22px;fill:#141109;flex:none}
-  .note{font-family:var(--mono);font-size:10px;line-height:1.8;letter-spacing:.06em;
-    color:var(--ink-3);margin-top:34px}
+  /* the card's page shortcuts — where the formal-name note line used to live */
+  .pages{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+    display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:34px}
+  .pages a{color:var(--ink-3);text-decoration:none;transition:color .22s}
+  .pages a:hover{color:var(--gold-hi)}
+  .pages span{color:var(--gold-dim)}
 
   /* the mobile blocks live BELOW every base rule they override — equal
      specificity means source order decides, and above the bases these
@@ -115,7 +119,7 @@
     .glass .eyebrow{margin-bottom:10px}
     .actions{margin-top:18px}
     .actions a{font-size:12px;letter-spacing:.05em;padding-bottom:6px}
-    .note{margin-top:20px;font-size:9px}
+    .pages{margin-top:20px}
   }
   /* SHORT phones (iPhone SE class): the tall-phone card cannot land in a
      <700px frame — the whole vertical rhythm rides vh here so the card
@@ -132,7 +136,7 @@
     .glass .eyebrow{margin-bottom:1.1vh;font-size:10px}
     .actions{margin-top:1.9vh;gap:2vh}
     .actions a{font-size:11px}
-    .note{margin-top:1.6vh;font-size:8px;line-height:1.55}
+    .pages{margin-top:1.6vh;font-size:9px}
   }
 
   /* the sound toggle — bottom right, quiet gold ring. it is also the manual
@@ -208,13 +212,18 @@
     before it is reached.</p>
     <p class="b1">The city&rsquo;s leading tour operators trust us with their most valuable
     guests &mdash; and we treat every seat like a reputation. Send us a day.</p>
-    <nav class="actions">
+    <nav class="actions" aria-label="Contact">
       <a class="wa" href="https://wa.me/971507207023" target="_blank" rel="noopener" aria-label="WhatsApp Black Hawks" title="WhatsApp">
         <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413"/></svg>
       </a>
       <a href="mailto:enquiries@blackhawks.luxury">enquiries@blackhawks.luxury</a>
     </nav>
-    <p class="note">Black Hawks Luxury Concierge Services &middot; Dubai, United Arab Emirates</p>
+    <nav class="pages" aria-label="Pages">
+      <a href="about.html">About</a><span>&middot;</span>
+      <a href="fleet.html">Fleet</a><span>&middot;</span>
+      <a href="services.html">Services</a><span>&middot;</span>
+      <a href="contact.html">Contact</a>
+    </nav>
   </div>
 </section>
 
@@ -238,14 +247,17 @@
   const btn = document.getElementById('snd');
   let ctx = null, master = null, started = false, on = false;
 
-  const CHORDS = [           // Dm9 · Bbmaj9 · Gm9 · Asus4 — i / VI / iv / V
-    [73.42, 110.00, 130.81, 164.81],
-    [58.27,  87.31, 110.00, 146.83],
-    [98.00, 116.54, 146.83, 174.61],
-    [110.00, 164.81, 196.00, 220.00],
+  // WARM by his spec ("enjoyable, not thrilling"): major-leaning I–vi–IV–V,
+  // triangle voices instead of saws, brighter filter. alternatives live in
+  // music-options.html — swap the constants with a chosen mood's.
+  const CHORDS = [           // Cmaj9 · Am9 · Fmaj9 · G6/9
+    [65.41,  98.00, 164.81, 246.94],
+    [55.00, 110.00, 164.81, 246.94],
+    [87.31, 130.81, 196.00, 220.00],
+    [98.00, 146.83, 220.00, 293.66],
   ];
-  const SPARK = [587.33, 698.46, 783.99, 880.00, 1046.50];
-  const CHORD_S = 14, XFADE_S = 5, VOL = 0.13;
+  const SPARK = [523.25, 587.33, 659.25, 783.99, 880.00, 1046.50];
+  const CHORD_S = 16, XFADE_S = 5, VOL = 0.13;
 
   function build() {
     ctx = new AC();
@@ -264,19 +276,19 @@
     const bus = ctx.createGain(); bus.connect(dry); bus.connect(rev);
 
     const lp = ctx.createBiquadFilter(); lp.type = 'lowpass';
-    lp.frequency.value = 820; lp.Q.value = 0.4; lp.connect(bus);
-    const lfo = ctx.createOscillator(); lfo.frequency.value = 0.016;
-    const lfoG = ctx.createGain(); lfoG.gain.value = 300;
+    lp.frequency.value = 1150; lp.Q.value = 0.4; lp.connect(bus);
+    const lfo = ctx.createOscillator(); lfo.frequency.value = 0.014;
+    const lfoG = ctx.createGain(); lfoG.gain.value = 260;
     lfo.connect(lfoG); lfoG.connect(lp.frequency); lfo.start();
 
     const chordGains = CHORDS.map(notes => {
       const g = ctx.createGain(); g.gain.value = 0; g.connect(lp);
       for (const f of notes) {
-        const o1 = ctx.createOscillator(); o1.type = 'sawtooth'; o1.frequency.value = f; o1.detune.value = -4;
-        const o2 = ctx.createOscillator(); o2.type = 'sawtooth'; o2.frequency.value = f; o2.detune.value = 4;
-        const o3 = ctx.createOscillator(); o3.type = 'sine'; o3.frequency.value = f / 2;
-        const ng = ctx.createGain(); ng.gain.value = 0.05;
-        const sg = ctx.createGain(); sg.gain.value = 0.055;
+        const o1 = ctx.createOscillator(); o1.type = 'triangle'; o1.frequency.value = f; o1.detune.value = -5;
+        const o2 = ctx.createOscillator(); o2.type = 'triangle'; o2.frequency.value = f; o2.detune.value = 5;
+        const o3 = ctx.createOscillator(); o3.type = 'sine'; o3.frequency.value = f;
+        const ng = ctx.createGain(); ng.gain.value = 0.09;
+        const sg = ctx.createGain(); sg.gain.value = 0.05;
         o1.connect(ng); o2.connect(ng); o3.connect(sg);
         ng.connect(g); sg.connect(g);
         o1.start(); o2.start(); o3.start();

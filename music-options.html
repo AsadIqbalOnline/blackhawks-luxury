@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/svg+xml" href="img/brand/mark.svg">
+<meta name="robots" content="noindex">
+<title>Music options — Black Hawks</title>
+<link rel="stylesheet" href="pages.css">
+<style>
+  .card{cursor:pointer}
+  .card.playing{border-color:var(--gold)}
+  .card.playing .kicker::after{content:" — playing";color:var(--gold-hi)}
+  .hint{font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--ink-3);margin-top:22px}
+</style>
+</head>
+<body>
+
+<div id="glow"></div>
+
+<a id="mark" href="index.html" aria-label="Black Hawks — home">
+  <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>
+    <linearGradient id="au" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#F6E7A0"/><stop offset="0.42" stop-color="#D4AF37"/><stop offset="1" stop-color="#7A5E1C"/>
+    </linearGradient>
+    <linearGradient id="gl" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FFF" stop-opacity=".85"/><stop offset=".35" stop-color="#FFF" stop-opacity=".1"/><stop offset="1" stop-color="#FFF" stop-opacity="0"/>
+    </linearGradient></defs>
+    <path fill="url(#au)" d="M6 50 L20 18 L27 24 L15 52 Z"/>
+    <path fill="url(#au)" d="M20 50 L34 12 L41 18 L29 52 Z"/>
+    <path fill="url(#au)" d="M34 50 L48 8 L58 12 L52 22 L43 52 Z"/>
+    <path fill="url(#au)" d="M48 8 L58 12 L54 5 Z"/>
+    <path fill="url(#gl)" d="M6 50 L20 18 L27 24 L48 8 L58 12 L30 34 L15 52 Z" opacity=".5"/>
+  </svg>
+  <span><span class="bh">Black&thinsp;Hawks</span><br><span class="lcs">Luxury&nbsp;Concierge&nbsp;Services</span></span>
+</a>
+
+<main>
+  <p class="eyebrow">Working sheet &middot; not linked publicly</p>
+  <h1 class="d1">Pick the site&rsquo;s music.</h1>
+  <p class="lede">Tap a card to hear it — it plays live, exactly as the site would
+  sound. Tap another to switch. Tell me the letter and I hardwire it.</p>
+  <p class="hint">A is currently live on the site.</p>
+
+  <div class="grid">
+    <article class="card text" data-mood="golden">
+      <div class="pad">
+        <p class="kicker">A &middot; Golden Hour</p>
+        <h2 class="d2">Warm, open, quietly happy.</h2>
+        <p class="b1">Major chords, soft glassy voices, gentle high sparkles.
+        The lobby at sunset — welcoming rather than mysterious.</p>
+      </div>
+    </article>
+    <article class="card text" data-mood="calm">
+      <div class="pad">
+        <p class="kicker">B &middot; Majlis Calm</p>
+        <h2 class="d2">Slow, deep, spa-quiet.</h2>
+        <p class="b1">The same warmth at half the pace with a deeper floor and
+        rarer sparkles. Almost not there — pure atmosphere.</p>
+      </div>
+    </article>
+    <article class="card text" data-mood="drive">
+      <div class="pad">
+        <p class="kicker">C &middot; Night Drive</p>
+        <h2 class="d2">Warm with a soft pulse.</h2>
+        <p class="b1">Golden Hour plus a slow, quiet pluck pattern — a heartbeat
+        of movement without ever becoming a beat. Enjoyable, never thrilling.</p>
+      </div>
+    </article>
+    <article class="card text" data-mood="dark">
+      <div class="pad">
+        <p class="kicker">D &middot; Dark Lobby</p>
+        <h2 class="d2">The original — moody and low.</h2>
+        <p class="b1">Minor chords, shadowed and cinematic. Kept here for
+        comparison; this is what the site had first.</p>
+      </div>
+    </article>
+  </div>
+</main>
+
+<script>
+(() => {
+  const AC = window.AudioContext || window.webkitAudioContext;
+  const MOODS = {
+    golden: { chords: [[65.41,98,164.81,246.94],[55,110,164.81,246.94],[87.31,130.81,196,220],[98,146.83,220,293.66]],
+      wave:'triangle', triG:.09, sinG:.05, subOct:false, lp:1150, lfoF:.014, lfoA:260,
+      chordS:16, xf:5, spark:[523.25,587.33,659.25,783.99,880,1046.5], sparkG:.045, sparkMin:6, sparkRand:9, vol:.13 },
+    calm: { chords: [[65.41,98,164.81,246.94],[87.31,130.81,196,220],[55,110,164.81,246.94],[98,146.83,220,293.66]],
+      wave:'triangle', triG:.08, sinG:.065, subOct:true, lp:950, lfoF:.01, lfoA:200,
+      chordS:22, xf:7, spark:[523.25,659.25,783.99,1046.5], sparkG:.032, sparkMin:11, sparkRand:12, vol:.12 },
+    drive: { chords: [[65.41,98,164.81,246.94],[55,110,164.81,246.94],[87.31,130.81,196,220],[98,146.83,220,293.66]],
+      wave:'triangle', triG:.09, sinG:.05, subOct:false, lp:1150, lfoF:.014, lfoA:260,
+      chordS:16, xf:5, spark:[523.25,587.33,659.25,783.99,880,1046.5], sparkG:.04, sparkMin:7, sparkRand:9, vol:.13,
+      arp:{ iv: (60/76)/2, notes:[261.63,329.63,392,493.88], g:.028, dec:.5 } },
+    dark: { chords: [[73.42,110,130.81,164.81],[58.27,87.31,110,146.83],[98,116.54,146.83,174.61],[110,164.81,196,220]],
+      wave:'sawtooth', triG:.05, sinG:.055, subOct:true, lp:820, lfoF:.016, lfoA:300,
+      chordS:14, xf:5, spark:[587.33,698.46,783.99,880,1046.5], sparkG:.045, sparkMin:6, sparkRand:9, vol:.13 },
+  };
+  let ctx = null, timers = [];
+
+  function stop() {
+    timers.forEach(clearTimeout); timers = [];
+    if (ctx) { try { ctx.close(); } catch (e) {} ctx = null; }
+    document.querySelectorAll('.card').forEach(c => c.classList.remove('playing'));
+  }
+
+  function play(key, el) {
+    stop();
+    const M = MOODS[key];
+    ctx = new AC();
+    const master = ctx.createGain(); master.gain.value = 0;
+    const comp = ctx.createDynamicsCompressor();
+    comp.threshold.value = -30; comp.ratio.value = 6;
+    master.connect(comp); comp.connect(ctx.destination);
+
+    const len = ctx.sampleRate * 3.4, ir = ctx.createBuffer(2, len, ctx.sampleRate);
+    for (let c = 0; c < 2; c++) { const d = ir.getChannelData(c);
+      for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 2.7); }
+    const rev = ctx.createConvolver(); rev.buffer = ir;
+    const revG = ctx.createGain(); revG.gain.value = 0.6;
+    rev.connect(revG); revG.connect(master);
+    const dry = ctx.createGain(); dry.gain.value = 0.8; dry.connect(master);
+    const bus = ctx.createGain(); bus.connect(dry); bus.connect(rev);
+
+    const lp = ctx.createBiquadFilter(); lp.type = 'lowpass';
+    lp.frequency.value = M.lp; lp.Q.value = 0.4; lp.connect(bus);
+    const lfo = ctx.createOscillator(); lfo.frequency.value = M.lfoF;
+    const lfoG = ctx.createGain(); lfoG.gain.value = M.lfoA;
+    lfo.connect(lfoG); lfoG.connect(lp.frequency); lfo.start();
+
+    const chordGains = M.chords.map(notes => {
+      const g = ctx.createGain(); g.gain.value = 0; g.connect(lp);
+      for (const f of notes) {
+        const o1 = ctx.createOscillator(); o1.type = M.wave; o1.frequency.value = f; o1.detune.value = -5;
+        const o2 = ctx.createOscillator(); o2.type = M.wave; o2.frequency.value = f; o2.detune.value = 5;
+        const o3 = ctx.createOscillator(); o3.type = 'sine'; o3.frequency.value = M.subOct ? f / 2 : f;
+        const ng = ctx.createGain(); ng.gain.value = M.triG;
+        const sg = ctx.createGain(); sg.gain.value = M.sinG;
+        o1.connect(ng); o2.connect(ng); o3.connect(sg);
+        ng.connect(g); sg.connect(g);
+        o1.start(); o2.start(); o3.start();
+      }
+      return g;
+    });
+    let ci = 0;
+    chordGains[0].gain.value = 1;
+    (function nextChord() {
+      if (!ctx) return;
+      const t = ctx.currentTime, ni = (ci + 1) % M.chords.length;
+      chordGains[ci].gain.setValueAtTime(chordGains[ci].gain.value, t);
+      chordGains[ci].gain.linearRampToValueAtTime(0, t + M.xf);
+      chordGains[ni].gain.setValueAtTime(chordGains[ni].gain.value, t);
+      chordGains[ni].gain.linearRampToValueAtTime(1, t + M.xf);
+      ci = ni;
+      timers.push(setTimeout(nextChord, M.chordS * 1000));
+    })();
+
+    (function sparkle() {
+      if (!ctx) return;
+      const t = ctx.currentTime, f = M.spark[(Math.random() * M.spark.length) | 0];
+      const o = ctx.createOscillator(); o.type = 'triangle'; o.frequency.value = f;
+      const g = ctx.createGain(); g.gain.setValueAtTime(0, t);
+      g.gain.linearRampToValueAtTime(M.sparkG, t + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + 2.8);
+      o.connect(g); g.connect(rev);
+      o.start(t); o.stop(t + 3);
+      timers.push(setTimeout(sparkle, (M.sparkMin + Math.random() * M.sparkRand) * 1000));
+    })();
+
+    if (M.arp) (function pluck(step) {
+      if (!ctx) return;
+      const t = ctx.currentTime, f = M.arp.notes[step % M.arp.notes.length];
+      const o = ctx.createOscillator(); o.type = 'triangle'; o.frequency.value = f;
+      const g = ctx.createGain(); g.gain.setValueAtTime(0, t);
+      g.gain.linearRampToValueAtTime(M.arp.g, t + 0.01);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + M.arp.dec);
+      o.connect(g); g.connect(bus);
+      o.start(t); o.stop(t + M.arp.dec + 0.1);
+      timers.push(setTimeout(() => pluck(step + 1), M.arp.iv * 1000));
+    })(0);
+
+    ctx.resume().then(() => {
+      const t = ctx.currentTime;
+      master.gain.setValueAtTime(0, t);
+      master.gain.linearRampToValueAtTime(M.vol, t + 2);
+    });
+    el.classList.add('playing');
+    window.__mood = key;
+  }
+
+  document.querySelectorAll('.card[data-mood]').forEach(el => {
+    el.addEventListener('click', () => {
+      if (el.classList.contains('playing')) { stop(); window.__mood = null; return; }
+      play(el.dataset.mood, el);
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
