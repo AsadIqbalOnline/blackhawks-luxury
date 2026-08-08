@@ -55,8 +55,10 @@
   .copy{position:sticky;top:14vh;margin-left:var(--safe);
     width:var(--measure-h);max-width:calc(100vw - var(--safe)*2)}
   /* hero copy lives in the photograph's dead black — upper left, above the
-     roofline. never under the fixed lockup, whatever the viewport height. */
-  .beat:first-child .copy{top:clamp(84px, 11vh, 22vh)}
+     roofline. never under the fixed lockup, whatever the viewport height.
+     NOT sticky: it leaves 1:1 with the very first scroll pixel (his spec) —
+     relative offset, not padding, so its rect matches what the eye sees. */
+  .beat:first-child .copy{position:relative;top:clamp(84px, 11vh, 22vh)}
   .eyebrow{font-family:var(--mono);font-size:11px;line-height:16px;letter-spacing:.16em;
     text-transform:uppercase;color:var(--gold);margin-bottom:24px}
   .d1{font-size:40px;line-height:48px;font-weight:500;letter-spacing:.002em;color:var(--ink)}
@@ -1387,12 +1389,14 @@ function update(dt, ms) {
     c.style.opacity = e2.toFixed(3);
     // a title sliding through the lockup's corner = two texts superimposed;
     // the lockup bows out for the moment of the crossing. only an EXITING
-    // title counts (bottom glued to its section's bottom = sticky push-out) —
-    // at rest the hero title sits just px below the lockup and must not yield.
+    // title counts — at rest the hero sits just px below the lockup and must
+    // not yield. the hero (unpinned) is exiting the moment the page scrolls;
+    // pinned titles are exiting when glued to their section's bottom.
     if (e2 > 0.04) {
       const bR = c.getBoundingClientRect();
       const sB = beats[i].getBoundingClientRect().bottom;
-      if (sB - bR.bottom < 2 && bR.bottom > mR.top - 8 && bR.top < mR.bottom + 24) over = true;
+      const exiting = i === 0 ? scrollY > 4 : sB - bR.bottom < 2;
+      if (exiting && bR.bottom > mR.top - 8 && bR.top < mR.bottom + 24) over = true;
     }
   }
   markTitleOver = over; applyMark();
