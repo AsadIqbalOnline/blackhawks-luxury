@@ -42,10 +42,11 @@
   <p class="lede">Black on black, chauffeur included, prepared before every
   assignment. Tell us the day and the guests &mdash; we place the right car.</p>
 
-  <div class="grid">
-    <article class="card">
-      <img src="img/options2/a-prev.jpg" alt="Range Rover in black, at night">
-      <div class="pad">
+  <div class="deck" aria-roledescription="carousel">
+    <article class="slide">
+      <div class="bg"><img src="img/fleet/range-rover.jpg" alt="Range Rover in black, at night"></div>
+      <p class="num">01</p>
+      <div class="content">
         <p class="kicker">The principal&rsquo;s car</p>
         <h2 class="d2">Range Rover</h2>
         <p class="b1">Command seating and a silent rear cabin &mdash; the car for
@@ -53,9 +54,10 @@
         city, unshaken on the highway, at home at every hotel entrance in Dubai.</p>
       </div>
     </article>
-    <article class="card">
-      <img src="img/options2/c-prev.jpg" alt="Cadillac Escalade V ESV in black">
-      <div class="pad">
+    <article class="slide">
+      <div class="bg"><img src="img/fleet/escalade.jpg" alt="Cadillac Escalade V ESV in black"></div>
+      <p class="num">02</p>
+      <div class="content">
         <p class="kicker">The long-wheelbase flagship</p>
         <h2 class="d2">Cadillac Escalade V ESV</h2>
         <p class="b1">Presence, and the space to back it up &mdash; room for guests,
@@ -63,16 +65,29 @@
         delegations and arrivals that should feel like one.</p>
       </div>
     </article>
+    <article class="slide">
+      <p class="num">03</p>
+      <div class="content">
+        <p class="kicker">Every car, every day</p>
+        <h2 class="d2">Detailed before it leaves. Chauffeured always.</h2>
+        <p class="b1">No car goes out without being prepared, and no car goes out
+        without a chauffeur &mdash; we do not rent metal, we deliver days. Water
+        cold, cabin silent, route already planned.</p>
+      </div>
+    </article>
   </div>
-
-  <section class="glass">
-    <p class="kicker">Every car, every day</p>
-    <h2 class="d2">Detailed before it leaves. Chauffeured always.</h2>
-    <p class="b1">No car goes out without being prepared, and no car goes out
-    without a chauffeur &mdash; we do not rent metal, we deliver days. Water cold,
-    cabin silent, route already planned.</p>
-  </section>
+  <div class="deck-ui">
+    <div class="dots" aria-hidden="true"></div>
+    <p class="count"></p>
+    <button class="deck-btn" data-prev aria-label="Previous">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M14.5 5.5 8 12l6.5 6.5"/></svg>
+    </button>
+    <button class="deck-btn" data-next aria-label="Next">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M9.5 5.5 16 12l-6.5 6.5"/></svg>
+    </button>
+  </div>
 </main>
+<script src="pages.js" defer></script>
 
 <footer>
   <nav class="pages" aria-label="Pages">

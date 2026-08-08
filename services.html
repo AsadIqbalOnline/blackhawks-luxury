@@ -42,9 +42,10 @@
   <p class="lede">Every service is chauffeured, planned in advance, and run so your
   office hears nothing until the thank-you.</p>
 
-  <div class="grid">
-    <article class="card text">
-      <div class="pad">
+  <div class="deck" aria-roledescription="carousel">
+    <article class="slide">
+      <p class="num">01</p>
+      <div class="content">
         <p class="kicker">Airport arrivals</p>
         <h2 class="d2">Met by name at the barrier.</h2>
         <p class="b1">Flight watched, chauffeur in place before the doors open, bags
@@ -52,8 +53,9 @@
         tone for the whole stay &mdash; we treat them that way.</p>
       </div>
     </article>
-    <article class="card text">
-      <div class="pad">
+    <article class="slide">
+      <p class="num">02</p>
+      <div class="content">
         <p class="kicker">Full days at disposal</p>
         <h2 class="d2">Dunes at six, dinner at nine.</h2>
         <p class="b1">Same car, same chauffeur, from the first pickup to the last
@@ -61,8 +63,9 @@
         to you if anything changes. Nothing changes.</p>
       </div>
     </article>
-    <article class="card text">
-      <div class="pad">
+    <article class="slide">
+      <p class="num">03</p>
+      <div class="content">
         <p class="kicker">Corporate &amp; roadshows</p>
         <h2 class="d2">Schedules that move. Cars that keep up.</h2>
         <p class="b1">Back-to-back meetings across the city, timing that shifts by
@@ -70,8 +73,9 @@
         discretion as a default.</p>
       </div>
     </article>
-    <article class="card text">
-      <div class="pad">
+    <article class="slide">
+      <p class="num">04</p>
+      <div class="content">
         <p class="kicker">Events &amp; private occasions</p>
         <h2 class="d2">Arrivals that look like the invitation promised.</h2>
         <p class="b1">Openings, weddings, delegations, evenings that matter &mdash;
@@ -79,16 +83,29 @@
         the event.</p>
       </div>
     </article>
+    <article class="slide">
+      <p class="num">05</p>
+      <div class="content">
+        <p class="kicker">For operators</p>
+        <h2 class="d2">One ground partner for the whole programme.</h2>
+        <p class="b1">Itineraries taken as a whole, not as separate transfers &mdash;
+        one thread with your office, one standard across every guest. Send the
+        programme; we come back with the plan.</p>
+      </div>
+    </article>
   </div>
-
-  <section class="glass">
-    <p class="kicker">For operators</p>
-    <h2 class="d2">One ground partner for the whole programme.</h2>
-    <p class="b1">Itineraries taken as a whole, not as separate transfers &mdash;
-    one thread with your office, one standard across every guest. Send the
-    programme; we come back with the plan.</p>
-  </section>
+  <div class="deck-ui">
+    <div class="dots" aria-hidden="true"></div>
+    <p class="count"></p>
+    <button class="deck-btn" data-prev aria-label="Previous">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M14.5 5.5 8 12l6.5 6.5"/></svg>
+    </button>
+    <button class="deck-btn" data-next aria-label="Next">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M9.5 5.5 16 12l-6.5 6.5"/></svg>
+    </button>
+  </div>
 </main>
+<script src="pages.js" defer></script>
 
 <footer>
   <nav class="pages" aria-label="Pages">

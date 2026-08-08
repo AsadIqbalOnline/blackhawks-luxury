@@ -104,5 +104,58 @@ footer{position:relative;z-index:2;max-width:1060px;margin:26px auto 0;
   padding-bottom:6px;transition:color .22s,border-color .22s}
 .mail:hover{color:var(--gold-hi);border-color:var(--gold)}
 
+/* ---------- the DECK — full-bleed cards that tilt-swap to the next
+   (his reference: incoming card rises from below at ~8°, slides OVER the
+   outgoing one, settles flat; outgoing tilts away upward) ---------- */
+.deck{position:relative;height:min(70vh,680px);margin-top:38px;
+  perspective:1300px}
+.slide{position:absolute;inset:0;border-radius:26px;overflow:hidden;
+  visibility:hidden;transform-origin:78% 100%;
+  background:linear-gradient(165deg, rgba(246,231,160,.09), rgba(212,175,55,.04) 40%, rgba(255,255,255,.012));
+  border:1px solid rgba(212,175,55,.28);
+  box-shadow:inset 0 1px 0 rgba(246,231,160,.22), 0 40px 90px rgba(0,0,0,.55)}
+.slide.on{visibility:visible}
+.slide .bg{position:absolute;inset:0}
+.slide .bg img{width:100%;height:100%;object-fit:cover;display:block}
+.slide .bg::after{content:"";position:absolute;inset:0;
+  background:linear-gradient(12deg, rgba(4,5,7,.88) 18%, rgba(4,5,7,.35) 46%, transparent 70%)}
+.slide .content{position:absolute;inset:0;z-index:2;display:flex;
+  flex-direction:column;justify-content:flex-end;padding:44px 48px}
+.slide .kicker{margin-bottom:10px}
+.slide .d2{font-size:clamp(24px,3.2vw,34px)}
+.slide .b1{max-width:480px}
+.slide .num{position:absolute;top:30px;right:36px;z-index:2;
+  font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:var(--ink-3)}
+.slide.in{animation:deckIn .9s cubic-bezier(.22,.72,.18,1) both}
+.slide.out{animation:deckOut .9s cubic-bezier(.5,.06,.5,.6) both}
+@keyframes deckIn{
+  from{transform:translateY(74%) rotate(8deg) scale(.985)}
+  to{transform:translateY(0) rotate(0) scale(1)}}
+@keyframes deckOut{
+  from{transform:translateY(0) rotate(0)}
+  to{transform:translateY(-26%) rotate(-6deg) scale(.97);opacity:0}}
+.deck-ui{display:flex;align-items:center;gap:18px;margin-top:20px}
+.deck-ui .count{font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:var(--ink-3)}
+.deck-ui .dots{display:flex;gap:8px;margin-right:auto}
+.deck-ui .dots i{width:22px;height:2px;background:rgba(212,175,55,.22);border-radius:2px;
+  transition:background .3s}
+.deck-ui .dots i.on{background:var(--gold)}
+.deck-btn{width:44px;height:44px;border-radius:50%;cursor:pointer;padding:0;
+  background:rgba(8,9,11,.35);border:1px solid rgba(212,175,55,.38);
+  display:flex;align-items:center;justify-content:center;
+  transition:border-color .22s,background .22s}
+.deck-btn:hover{border-color:var(--gold);background:rgba(212,175,55,.08)}
+.deck-btn svg{width:16px;height:16px;stroke:var(--gold);fill:none;
+  stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+@media (max-width:760px){
+  .deck{height:min(64vh,560px)}
+  .slide .content{padding:24px 22px}
+  .slide .b1{font-size:14px;line-height:22px}
+  .slide .num{top:20px;right:22px}
+}
+@media (prefers-reduced-motion:reduce){
+  .slide.in,.slide.out{animation-duration:.01s}
+}
+
 :focus-visible{outline:1px solid var(--ink);outline-offset:4px}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}

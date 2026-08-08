@@ -46,35 +46,59 @@
   <p class="lede">The city&rsquo;s leading tour operators trust us with their most
   valuable guests. We treat every seat like a reputation.</p>
 
-  <section class="glass">
-    <p class="kicker">What we hold ourselves to</p>
-    <div class="stds">
-      <div>
+  <div class="deck" aria-roledescription="carousel">
+    <article class="slide">
+      <div class="bg"><img src="img/fleet/hero-wide.jpg" alt="Black Cadillac Escalade at night"></div>
+      <p class="num">01</p>
+      <div class="content">
+        <p class="kicker">The standard</p>
         <h2 class="d2">The door opens before it is reached.</h2>
         <p class="b1">Arrivals are exact. Routes are planned before the day begins,
         and the car is waiting before the client is ready to leave.</p>
       </div>
-      <div>
+    </article>
+    <article class="slide">
+      <p class="num">02</p>
+      <div class="content">
+        <p class="kicker">The promise</p>
         <h2 class="d2">One call, nothing changes.</h2>
         <p class="b1">The day can move &mdash; dinner earlier, dunes later, one more
         stop. Your office hears about it once. The guest never feels it.</p>
       </div>
-      <div>
-        <h2 class="d2">Discretion as a default.</h2>
+    </article>
+    <article class="slide">
+      <p class="num">03</p>
+      <div class="content">
+        <p class="kicker">The default</p>
+        <h2 class="d2">Discretion, always.</h2>
         <p class="b1">Who rode, where, and with whom stays inside the car. Silence
         is part of the service, not an extra.</p>
       </div>
-    </div>
-  </section>
-
-  <section class="glass">
-    <p class="kicker">Who we serve</p>
-    <h2 class="d2">Tour operators first. Private clients when the calendar allows.</h2>
-    <p class="b1">We are built for the operators and travel designers who promise
-    their guests a flawless Dubai &mdash; and need a ground partner who delivers it
-    without being watched. Direct enquiries are welcome when the fleet has room.</p>
-  </section>
+    </article>
+    <article class="slide">
+      <p class="num">04</p>
+      <div class="content">
+        <p class="kicker">Who we serve</p>
+        <h2 class="d2">Tour operators first. Private clients when the calendar allows.</h2>
+        <p class="b1">We are built for the operators and travel designers who promise
+        their guests a flawless Dubai &mdash; and need a ground partner who delivers
+        it without being watched. Direct enquiries are welcome when the fleet has
+        room.</p>
+      </div>
+    </article>
+  </div>
+  <div class="deck-ui">
+    <div class="dots" aria-hidden="true"></div>
+    <p class="count"></p>
+    <button class="deck-btn" data-prev aria-label="Previous">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M14.5 5.5 8 12l6.5 6.5"/></svg>
+    </button>
+    <button class="deck-btn" data-next aria-label="Next">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M9.5 5.5 16 12l-6.5 6.5"/></svg>
+    </button>
+  </div>
 </main>
+<script src="pages.js" defer></script>
 
 <footer>
   <nav class="pages" aria-label="Pages">
