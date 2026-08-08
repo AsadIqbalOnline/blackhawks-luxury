@@ -1200,7 +1200,7 @@ addEventListener('pointermove', (e) => {
    perspective rotation while the world turns underneath) and sits LOW in the
    frame — the copy owns the black above it. fitPlane only computes the sizes;
    update() glues the sheet to the camera. */
-let planeW = 1, planeH = 1, planeD = 6, planeShift = 0;
+let planeW = 1, planeH = 1, planeD = 6, planeShift = 0, planeShiftX = 0;
 function fitPlane() {
   const B = BEATS[0];
   const camPos = new THREE.Vector3(Math.sin(B.az) * Math.cos(B.el) * B.dist,
@@ -1215,6 +1215,10 @@ function fitPlane() {
     planeH = Math.max(Hv * 1.03, Wv * 1.03 / PA);
     planeW = planeH * PA;
     if (planeW < Wv * 1.01) { planeW = Wv * 1.03; planeH = planeW / PA; }
+    // ZOOM 1.5x, face-anchored (his spec): the plate's LEFT edge — the car's
+    // nose — pins to the frame's left edge, all crop falls on the right
+    planeW *= 1.5; planeH *= 1.5;
+    planeShiftX = (planeW - Wv) / 2;
     planeShift = 0;
   } else {
     // landscape: TRUE full-bleed — 6% width overscan pushes the feathered
@@ -1228,6 +1232,7 @@ function fitPlane() {
     // ROOF must stay in view: on very wide screens the roof-guard term wins
     // and the wheels give up a sliver instead. car sits at 0.06–0.82 of plate.
     planeShift = Math.max(0.50 - 0.30 * Hp, 0.44 * Hp - 0.45) * Hv;
+    planeShiftX = 0;
   }
 }
 const _bR = new THREE.Vector3(), _bU = new THREE.Vector3(),
@@ -1237,7 +1242,8 @@ function stickPlane() {
   _bR.set(1, 0, 0).applyQuaternion(q);
   _bU.set(0, 1, 0).applyQuaternion(q);
   _bF.set(0, 0, -1).applyQuaternion(q);
-  _bC.copy(camera.position).addScaledVector(_bF, planeD).addScaledVector(_bU, -planeShift);
+  _bC.copy(camera.position).addScaledVector(_bF, planeD).addScaledVector(_bU, -planeShift)
+     .addScaledVector(_bR, planeShiftX);
   if (uni) {
     uni.uPlaneC.value.copy(_bC);
     uni.uPlaneR.value.copy(_bR).multiplyScalar(planeW);
