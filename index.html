@@ -235,126 +235,45 @@
   </svg>
 </button>
 
+<audio id="bgm" src="audio/a-enjoy-the-summer.mp3" loop preload="none"></audio>
 <script>
-/* AMBIENT — procedural night-lobby music. no file, no license, no network:
-   four low minor-voiced pads crossfading on a slow cycle under a drifting
-   lowpass, sparse pentatonic sparkles into a long generated reverb. sound
-   cannot legally start before the first user gesture — so it starts on the
-   very first one (scroll, touch, key, click), and #snd toggles it after. */
+/* MUSIC — "Enjoy The Summer" (penguinmusic, Pixabay Content License; see
+   audio/LICENSES.md). real track, trip-and-enjoyment register — his spec.
+   sound cannot start before the first user gesture, so it starts on the very
+   first one (scroll, touch, key, click); #snd toggles it after. volume eases
+   in (iOS ignores JS volume — plays at file level there; mute still works). */
 (() => {
-  const AC = window.AudioContext || window.webkitAudioContext;
-  if (!AC) return;
+  const a = document.getElementById('bgm');
   const btn = document.getElementById('snd');
-  let ctx = null, master = null, started = false, on = false;
-
-  // WARM by his spec ("enjoyable, not thrilling"): major-leaning I–vi–IV–V,
-  // triangle voices instead of saws, brighter filter. alternatives live in
-  // music-options.html — swap the constants with a chosen mood's.
-  const CHORDS = [           // Cmaj9 · Am9 · Fmaj9 · G6/9
-    [65.41,  98.00, 164.81, 246.94],
-    [55.00, 110.00, 164.81, 246.94],
-    [87.31, 130.81, 196.00, 220.00],
-    [98.00, 146.83, 220.00, 293.66],
-  ];
-  const SPARK = [523.25, 587.33, 659.25, 783.99, 880.00, 1046.50];
-  const CHORD_S = 16, XFADE_S = 5, VOL = 0.13;
-
-  function build() {
-    ctx = new AC();
-    master = ctx.createGain(); master.gain.value = 0;
-    const comp = ctx.createDynamicsCompressor();
-    comp.threshold.value = -30; comp.ratio.value = 6;
-    master.connect(comp); comp.connect(ctx.destination);
-
-    const len = ctx.sampleRate * 3.4, ir = ctx.createBuffer(2, len, ctx.sampleRate);
-    for (let c = 0; c < 2; c++) { const d = ir.getChannelData(c);
-      for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 2.7); }
-    const rev = ctx.createConvolver(); rev.buffer = ir;
-    const revG = ctx.createGain(); revG.gain.value = 0.6;
-    rev.connect(revG); revG.connect(master);
-    const dry = ctx.createGain(); dry.gain.value = 0.8; dry.connect(master);
-    const bus = ctx.createGain(); bus.connect(dry); bus.connect(rev);
-
-    const lp = ctx.createBiquadFilter(); lp.type = 'lowpass';
-    lp.frequency.value = 1150; lp.Q.value = 0.4; lp.connect(bus);
-    const lfo = ctx.createOscillator(); lfo.frequency.value = 0.014;
-    const lfoG = ctx.createGain(); lfoG.gain.value = 260;
-    lfo.connect(lfoG); lfoG.connect(lp.frequency); lfo.start();
-
-    const chordGains = CHORDS.map(notes => {
-      const g = ctx.createGain(); g.gain.value = 0; g.connect(lp);
-      for (const f of notes) {
-        const o1 = ctx.createOscillator(); o1.type = 'triangle'; o1.frequency.value = f; o1.detune.value = -5;
-        const o2 = ctx.createOscillator(); o2.type = 'triangle'; o2.frequency.value = f; o2.detune.value = 5;
-        const o3 = ctx.createOscillator(); o3.type = 'sine'; o3.frequency.value = f;
-        const ng = ctx.createGain(); ng.gain.value = 0.09;
-        const sg = ctx.createGain(); sg.gain.value = 0.05;
-        o1.connect(ng); o2.connect(ng); o3.connect(sg);
-        ng.connect(g); sg.connect(g);
-        o1.start(); o2.start(); o3.start();
-      }
-      return g;
-    });
-    let ci = 0;
-    chordGains[0].gain.value = 1;
-    (function nextChord() {
-      const t = ctx.currentTime, ni = (ci + 1) % CHORDS.length;
-      chordGains[ci].gain.setValueAtTime(chordGains[ci].gain.value, t);
-      chordGains[ci].gain.linearRampToValueAtTime(0, t + XFADE_S);
-      chordGains[ni].gain.setValueAtTime(chordGains[ni].gain.value, t);
-      chordGains[ni].gain.linearRampToValueAtTime(1, t + XFADE_S);
-      ci = ni;
-      setTimeout(nextChord, CHORD_S * 1000);
-    })();
-
-    (function sparkle() {
-      if (ctx.state === 'running') {
-        const t = ctx.currentTime, f = SPARK[(Math.random() * SPARK.length) | 0];
-        const o = ctx.createOscillator(); o.type = 'triangle'; o.frequency.value = f;
-        const g = ctx.createGain(); g.gain.setValueAtTime(0, t);
-        g.gain.linearRampToValueAtTime(0.045, t + 0.02);
-        g.gain.exponentialRampToValueAtTime(0.0001, t + 2.8);
-        const pan = ctx.createStereoPanner ? ctx.createStereoPanner() : null;
-        if (pan) { pan.pan.value = Math.random() * 1.2 - 0.6; o.connect(g); g.connect(pan); pan.connect(rev); }
-        else { o.connect(g); g.connect(rev); }
-        o.start(t); o.stop(t + 3);
-      }
-      setTimeout(sparkle, 6000 + Math.random() * 9000);
-    })();
+  if (!a || !btn) return;
+  const VOL = 0.45;
+  let started = false, on = false, ramp = null;
+  function fadeTo(v, ms) {
+    if (ramp) clearInterval(ramp);
+    const from = a.volume, t0 = performance.now();
+    ramp = setInterval(() => {
+      const k = Math.min(1, (performance.now() - t0) / ms);
+      try { a.volume = from + (v - from) * k; } catch (e) {}
+      if (k >= 1) { clearInterval(ramp); ramp = null; if (v === 0) a.pause(); }
+    }, 50);
   }
-
-  function fadeTo(v, s) {
-    const t = ctx.currentTime;
-    master.gain.cancelScheduledValues(t);
-    master.gain.setValueAtTime(master.gain.value, t);
-    master.gain.linearRampToValueAtTime(v, t + s);
-  }
-  function setUI() {
-    btn.classList.toggle('off', !on);
-    btn.setAttribute('aria-pressed', String(on));
-  }
+  function setUI() { btn.classList.toggle('off', !on); btn.setAttribute('aria-pressed', String(on)); }
   function start() {
     if (started) return;
-    if (!ctx) build();
-    ctx.resume().then(() => {
-      if (ctx.state === 'running' && !started) {
-        started = true; on = true; fadeTo(VOL, 3); setUI();
-      }
-    }).catch(() => {});
+    try { a.volume = 0; } catch (e) {}
+    a.play().then(() => { started = true; on = true; fadeTo(VOL, 2500); setUI(); }).catch(() => {});
   }
   const arm = e => { if (e.target && e.target.closest && e.target.closest('#snd')) return; start(); };
   for (const ev of ['pointerdown', 'touchend', 'wheel', 'keydown', 'scroll'])
     addEventListener(ev, arm, { passive: true, capture: true });
-
   btn.addEventListener('click', () => {
     if (!started) { start(); return; }
     on = !on; setUI();
-    if (on) { ctx.resume(); fadeTo(VOL, 1.2); }
-    else { fadeTo(0, 0.6); setTimeout(() => { if (!on) ctx.suspend(); }, 700); }
+    if (on) { a.play(); fadeTo(VOL, 900); }
+    else fadeTo(0, 500);
   });
-
-  start();   // some browsers allow it for returning visitors — take it if given
-  window.__amb = { state: () => ctx ? ctx.state : 'none', get on() { return on; }, get gain() { return master ? master.gain.value : 0; } };
+  start();   // some browsers grant autoplay for returning visitors — take it
+  window.__amb = { state: () => (a.paused ? 'suspended' : 'running'), get on() { return on; }, get gain() { return a.volume; } };
 })();
 </script>
 
