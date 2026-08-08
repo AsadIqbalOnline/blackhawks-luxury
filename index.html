@@ -56,24 +56,6 @@
     text-transform:uppercase;color:var(--gold);margin-bottom:24px}
   .d1{font-size:40px;line-height:48px;font-weight:500;letter-spacing:.002em;color:var(--ink)}
   .b1{font-size:17px;line-height:27px;color:var(--ink-2);max-width:var(--measure-b);margin-top:20px}
-  @media (max-width:760px){
-    .d1{font-size:26px;line-height:32px}
-    .b1{font-size:16px;line-height:26px;margin-top:16px}
-    /* full-frame hero photo behind — copy sits high, over the dark treeline */
-    .copy{top:60vh}
-    /* tighter track: no dead scroll between the desert and the card */
-    .beat{height:110vh}
-    .beat:nth-child(3){height:118vh}
-    /* the card must land in ONE phone frame, desert visible around it */
-    .glass{padding:30px 24px;border-radius:18px}
-    .glass .d1{font-size:24px;line-height:30px;margin:8px 0 4px}
-    .glass .b1{font-size:14.5px;line-height:22px;margin-top:12px}
-    .glass .eyebrow{margin-bottom:10px}
-    .actions{margin-top:18px}
-    .actions a{font-size:12px;letter-spacing:.05em;padding-bottom:6px}
-    .note{margin-top:20px;font-size:9px}
-  }
-
   /* page three arrives on glass, over the living desert. glossy glass, not
      low-opacity grey: a sheen gradient + heavy blur + saturation, per the
      standing build rules — it must read as glass even over darkness. */
@@ -106,6 +88,47 @@
   .actions .wa svg{width:17px;height:17px;fill:#141109;flex:none}
   .note{font-family:var(--mono);font-size:10px;line-height:1.8;letter-spacing:.06em;
     color:var(--ink-3);margin-top:34px}
+
+  /* the mobile blocks live BELOW every base rule they override — equal
+     specificity means source order decides, and above the bases these
+     overrides silently die (the phone card rendered desktop padding for
+     weeks exactly this way) */
+  @media (max-width:760px){
+    .d1{font-size:26px;line-height:32px}
+    .b1{font-size:16px;line-height:26px;margin-top:16px}
+    /* full-frame hero photo behind — copy sits high, over the dark treeline */
+    .copy{top:60vh}
+    /* tighter track: no dead scroll between the desert and the card */
+    .beat{height:110vh}
+    .beat:nth-child(3){height:118vh}
+    /* the card must land in ONE phone frame, desert visible around it */
+    .glass{padding:30px 24px;border-radius:18px}
+    .glass .d1{font-size:24px;line-height:30px;margin:8px 0 4px}
+    .glass .b1{font-size:14.5px;line-height:22px;margin-top:12px}
+    .glass .eyebrow{margin-bottom:10px}
+    .actions{margin-top:18px}
+    .actions a{font-size:12px;letter-spacing:.05em;padding-bottom:6px}
+    .actions .wa{padding:12px 20px}
+    .note{margin-top:20px;font-size:9px}
+  }
+  /* SHORT phones (iPhone SE class): the tall-phone card cannot land in a
+     <700px frame — the whole vertical rhythm rides vh here so the card
+     compresses to the screen instead of being cut. tall phones never enter
+     this block and keep the look above. */
+  @media (max-width:760px) and (max-height:700px){
+    /* the section's tall breathing room also goes — with 8vh pads a card even
+       exactly one screen tall can never fully land (centering pushes its top
+       out of the last frame); the real bound is card ≤ 100vh − pad */
+    #next{padding:3vh var(--safe)}
+    .glass{padding:2.5vh 20px}
+    .glass .d1{font-size:3.1vh;line-height:1.22;margin:1vh 0 .5vh}
+    .glass .b1{font-size:1.9vh;line-height:1.44;margin-top:1.4vh}
+    .glass .eyebrow{margin-bottom:1.1vh;font-size:10px}
+    .actions{margin-top:1.9vh;gap:2vh}
+    .actions a{font-size:11px}
+    .actions .wa{padding:1.5vh 20px}
+    .note{margin-top:1.6vh;font-size:8px;line-height:1.55}
+  }
 
   :focus-visible{outline:1px solid var(--ink);outline-offset:4px}
   @media (prefers-reduced-motion:reduce){*{transition:none!important}}
