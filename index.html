@@ -17,8 +17,10 @@
   }
   @media (max-width:760px){ :root{--safe:28px} }
   *{box-sizing:border-box;margin:0;padding:0}
+  /* overflow-x must be CLIP, not hidden — hidden makes body a scroll
+     container and position:sticky (the pinned titles) silently dies */
   html,body{background:var(--ground);color:var(--ink);font-family:var(--body);
-    -webkit-font-smoothing:antialiased;overflow-x:hidden}
+    -webkit-font-smoothing:antialiased;overflow-x:clip}
 
   #stage{position:fixed;inset:0;z-index:0}
   #c{width:100%;height:100%;display:block}
@@ -75,14 +77,10 @@
   /* page three arrives on glass, over the living desert. glossy glass, not
      low-opacity grey: a sheen gradient + heavy blur + saturation, per the
      standing build rules — it must read as glass even over darkness. */
-  /* the company card DESCENDS from above onto the living desert — overflow
-     clips it while it is still up in the dark. transform is scroll-driven
-     from the rAF loop (CSS transitions do not tick in every pane). */
+  /* the card is STATIC on every view — it simply IS there and arrives by
+     normal page scroll, same as phones. no descend gesture. */
   #next{position:relative;z-index:2;min-height:100vh;display:flex;
-    align-items:center;justify-content:center;padding:8vh var(--safe) 8vh;
-    overflow:hidden}
-  /* the descend is a desktop gesture — on phones the card simply IS there */
-  @media (min-width:761px){ .glass{transform:translateY(-130vh)} }
+    align-items:center;justify-content:center;padding:8vh var(--safe) 8vh}
   .glass{width:min(680px, 92vw);border-radius:22px;padding:52px 56px;
     background:linear-gradient(165deg, rgba(246,231,160,.10), rgba(212,175,55,.045) 40%, rgba(255,255,255,.012));
     -webkit-backdrop-filter:blur(26px) saturate(1.5);
@@ -1077,16 +1075,17 @@ addEventListener('resize', () => {
 read(); fitPlane();
 
 const nextSec = document.getElementById('next');
-const glassEl = nextSec ? nextSec.querySelector('.glass') : null;
 
-// the fixed lockup yields while the glass panel occupies the frame — the
-// panel scrolls to the very top on phones and the two brandings collide.
-{
-  const mark = document.getElementById('mark');
-  new IntersectionObserver(es => {
-    for (const e of es) mark.classList.toggle('away', e.isIntersecting);
-  }, { rootMargin: '-6% 0px -72% 0px' }).observe(nextSec);
-}
+// the fixed lockup yields whenever something else occupies its corner: the
+// glass panel (it scrolls to the very top on phones) or a title riding out
+// with the page — two texts in the same corner is a collision.
+const markEl = document.getElementById('mark');
+let markPanelUp = false, markTitleOver = false;
+const applyMark = () => markEl.classList.toggle('away', markPanelUp || markTitleOver);
+new IntersectionObserver(es => {
+  for (const e of es) markPanelUp = e.isIntersecting;
+  applyMark();
+}, { rootMargin: '-6% 0px -72% 0px' }).observe(nextSec);
 
 const lerpN = (a, b, t) => a + (b - a) * t;
 
@@ -1135,19 +1134,6 @@ function update(dt, ms) {
     Math.sin(el) * dist + 0.9, Math.cos(az) * Math.cos(el) * dist);
   camera.lookAt(cx, 0.8, 0);
   stickPlane();   // the photograph rides the camera — sticky, never rotating
-
-  // the next page arrives from ABOVE (desktop only): as its section scrolls
-  // into view the glass card descends out of the dark and settles over the
-  // desert. phones get the card static — no animation.
-  if (glassEl && innerWidth > 760) {
-    const r = nextSec.getBoundingClientRect();
-    const p = Math.min(1, Math.max(0, (innerHeight - r.top) / innerHeight));
-    const ep = p * p * (3 - 2 * p);
-    glassEl.style.transform = `translateY(${((1 - ep) * -1.3 * innerHeight).toFixed(1)}px)`;
-    glassEl.style.opacity = Math.min(1, p * 2.2).toFixed(3);
-  } else if (glassEl && glassEl.style.transform) {
-    glassEl.style.transform = ''; glassEl.style.opacity = '';
-  }
 
   if (uni) {
     uni.uJourney.value = jou;
@@ -1207,14 +1193,30 @@ function update(dt, ms) {
   }
   if (window.__cityUni) __cityUni.uReveal.value = reveal;
 
-  // the copy is welded to the CANVAS state, not to raw scroll — on a fast flick
-  // the scene eases behind the scrollbar, and text must never sit over the
-  // wrong world (his recording caught beat-2 copy over the beat-0 photograph).
+  // copy fades IN welded to the CANVAS state, never raw scroll — on a fast
+  // flick the scene eases behind the scrollbar, and a title must never appear
+  // over a world that hasn't arrived yet. but it never fades OUT: each title
+  // holds until its section is on its last stretch, then the sticky bottom
+  // pushes it up and off WITH the page — titles leave by scrolling, not by
+  // dissolving in place (his spec, all beats).
+  const mR = markEl.getBoundingClientRect();
+  let over = false;
   for (let i = 0; i < beats.length; i++) {
-    const near = Math.max(0, 1 - Math.abs(f - i) * 1.7);
+    const near = Math.max(0, Math.min(1, 1 - (i - f) * 1.7));
     const e2 = near * near * (3 - 2 * near);
-    beats[i].firstElementChild.style.opacity = e2.toFixed(3);
+    const c = beats[i].firstElementChild;
+    c.style.opacity = e2.toFixed(3);
+    // a title sliding through the lockup's corner = two texts superimposed;
+    // the lockup bows out for the moment of the crossing. only an EXITING
+    // title counts (bottom glued to its section's bottom = sticky push-out) —
+    // at rest the hero title sits just px below the lockup and must not yield.
+    if (e2 > 0.04) {
+      const bR = c.getBoundingClientRect();
+      const sB = beats[i].getBoundingClientRect().bottom;
+      if (sB - bR.bottom < 2 && bR.bottom > mR.top - 8 && bR.top < mR.bottom + 24) over = true;
+    }
   }
+  markTitleOver = over; applyMark();
   if (plane) plane.visible = jou < 0.62;
 }
 
