@@ -169,18 +169,22 @@ body.stage #top{position:fixed}
   text-transform:uppercase;color:var(--ink-3);opacity:.7}
 .stage .legal{position:fixed;right:var(--safe);bottom:24px;z-index:4;text-align:right}
 @media (max-width:760px){
+  /* the stage must FIT the phone frame: the card keeps the same margins as
+     the text (no wider-than-everything bleed) and the media row takes
+     exactly the height that remains — never pushes past the fold */
   #show{grid-template-columns:1fr;grid-template-rows:auto 1fr;align-items:start;
-    row-gap:10px;column-gap:0;
-    padding:calc(var(--safe) + 104px) var(--safe) 64px}
+    row-gap:14px;column-gap:0;
+    padding:calc(var(--safe) + 84px) var(--safe) 72px}
   body.stage #top{position:fixed;top:calc(var(--safe) + 58px);left:var(--safe);right:auto;
     padding:0;justify-content:flex-start;gap:16px}
-  .isets{min-height:212px}
+  .isets{min-height:196px}
   .iset .dx{font-size:clamp(26px,7.4vw,34px);margin:8px 0 10px}
   .iset .b1{font-size:13.5px;line-height:21px}
-  .cta{margin-top:14px;padding:12px 24px;font-size:11px}
-  .media{height:auto;min-height:240px}
-  .slide{right:calc(var(--safe) * -1);left:calc(var(--safe) * -1);border-radius:20px}
-  .slide .num{right:calc(var(--safe) + 16px)}
+  .cta{margin-top:12px;padding:12px 24px;font-size:11px}
+  .media{height:100%;min-height:0}
+  .slide{left:0;right:0;border-radius:20px}
+  .slide .num{right:16px;top:16px}
+  .slide .ghost{font-size:min(18vh,30vw)}
   .stage .legal{display:none}
 }
 @media (prefers-reduced-motion:reduce){
