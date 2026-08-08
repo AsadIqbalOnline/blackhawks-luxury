@@ -145,9 +145,6 @@ body.stage #top{position:fixed}
 .slide .bg img{width:100%;height:100%;object-fit:cover;display:block}
 .slide .bg::after{content:"";position:absolute;inset:0;
   background:linear-gradient(8deg, rgba(4,5,7,.55) 8%, transparent 42%)}
-.slide .ghost{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
-  font-size:min(30vh,26vw);font-weight:600;letter-spacing:.04em;
-  color:rgba(212,175,55,.06);user-select:none}
 .slide .num{position:absolute;top:28px;right:calc(5vw + 34px);z-index:2;
   font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:var(--ink-3)}
 .slide.in{animation:deckIn .9s cubic-bezier(.22,.72,.18,1) both}
@@ -184,7 +181,6 @@ body.stage #top{position:fixed}
   .media{height:100%;min-height:0}
   .slide{left:0;right:0;border-radius:20px}
   .slide .num{right:16px;top:16px}
-  .slide .ghost{font-size:min(18vh,30vw)}
   .stage .legal{display:none}
 }
 @media (prefers-reduced-motion:reduce){
